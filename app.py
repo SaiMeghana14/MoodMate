@@ -4,7 +4,6 @@ from firebase_admin import credentials, firestore
 from utils.analyzer import analyze_mood
 from utils.quotes import get_motivational_quote
 import pandas as pd
-import json
 
 # Set Streamlit page config
 st.set_page_config(page_title="MoodMate", page_icon="🧠")
@@ -12,20 +11,15 @@ st.set_page_config(page_title="MoodMate", page_icon="🧠")
 # ---------------------------------------
 # 🔐 Firebase Initialization from secrets
 # ---------------------------------------
-import streamlit as st
-import firebase_admin
-from firebase_admin import credentials
-
-# ✅ Convert to native Python dict
 firebase_config = dict(st.secrets["firebase"])
 
-# ✅ Initialize Firebase
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
 
-# ✅ Optional test message (you can remove later)
+# ✅ Optional test message
 st.success("✅ Firebase initialized successfully.")
+
 
 # -----------------------
 # 🎯 Main App UI
