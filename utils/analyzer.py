@@ -32,3 +32,5 @@ Respond in this exact JSON format:
     except Exception as e:
         st.error(f"⚠️ OpenAI error: {e}")
         return "Neutral", "😐"
+if "api" not in st.secrets or "openai_key" not in st.secrets["api"]:
+    st.error("🚨 OpenAI API key not found in Streamlit secrets!")
