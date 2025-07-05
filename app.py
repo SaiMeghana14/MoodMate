@@ -8,9 +8,7 @@ import datetime
 
 # Initialize Firebase
 if not firebase_admin._apps:
-    import json
-    cred = credentials.Certificate(json.loads(st.secrets["FIREBASE_CREDS"]))
-
+    cred = credentials.Certificate("firebase_credentials.json")
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
