@@ -5,87 +5,50 @@ from utils.analyzer import analyze_mood
 from utils.quotes import get_motivational_quote
 import pandas as pd
 
-# Set Streamlit page config
+# -------------------
+# 🎨 App Config
+# -------------------
 st.set_page_config(page_title="MoodMate", page_icon="🧠")
+st.title("🧠 MoodMate – Your Mood Companion")
 
-# ---------------------------------------
-# 🔐 Firebase Initialization from secrets
-# ---------------------------------------
+# -------------------------------
+# 🔐 Firebase Initialization
+# -------------------------------
 firebase_config = dict(st.secrets["firebase"])
-
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
+db = firestore.client()
 
-# ✅ Optional test message
-st.success("✅ Firebase initialized successfully.")
+# -------------------
+# ⚙️ Sidebar Settings
+# -------------------
+st.sidebar.title("⚙️ Settings")
+use_openai = st.sidebar.toggle("Use OpenAI API (Online Mode)", value=True)
 
-
-# -----------------------
-# 🎯 Main App UI
-# -----------------------
-st.title("🧠 MoodMate – Your AI Mental Health Buddy")
-st.markdown("Welcome! Let’s understand how you're feeling today.")
-
-user_input = st.text_area("📝 How are you feeling right now?", height=150)
+# -------------------
+# 🗣️ Mood Input
+# -------------------
+user_input = st.text_area("📝 How are you feeling today?", height=100)
 
 if st.button("🔍 Analyze Mood"):
-    if user_input.strip():
-        mood, emoji = analyze_mood(user_input)
-        st.success(f"Your mood is: **{mood}** {emoji}")
-
-        # Show motivational quote
-        st.subheader("🌟 Here's something for you:")
-        st.info(get_motivational_quote(mood))
-
-        # Save to Firestore
-        try:
-            doc_ref = db.collection("mood_entries").document()
-            doc_ref.set({
-                "text": user_input,
-                "mood": mood,
-                "timestamp": firestore.SERVER_TIMESTAMP
-            })
-            st.success("✅ Your response has been securely saved.")
-        except Exception as e:
-            st.error(f"⚠️ Failed to save: {e}")
+    if user_input.strip() == "":
+        st.warning("Please enter a message to analyze.")
     else:
-        st.warning("Please enter how you're feeling.")
+        mood, emoji = analyze_mood(user_input, use_openai)
+        st.success(f"Your mood is **{mood}** {emoji}")
 
-# -----------------------
-# 📊 Mood History Viewer
-# -----------------------
-st.markdown("---")
-st.subheader("📚 Mood History")
+        # Optional: Show motivational quote
+        if mood != "Positive":
+            quote = get_motivational_quote()
+            st.markdown(f"💡 *{quote}*")
 
-try:
-    mood_entries = db.collection("mood_entries").order_by("timestamp", direction=firestore.Query.DESCENDING).stream()
-    entries = []
-
-    for doc in mood_entries:
-        data = doc.to_dict()
-        entries.append({
-            "Text": data.get("text", ""),
-            "Mood": data.get("mood", ""),
-            "Timestamp": data.get("timestamp")
+        # Log to Firestore
+        doc_ref = db.collection("mood_logs").document()
+        doc_ref.set({
+            "text": user_input,
+            "mood": mood,
+            "emoji": emoji,
+            "mode": "OpenAI" if use_openai else "Offline",
+            "timestamp": firestore.SERVER_TIMESTAMP
         })
-
-    if entries:
-        df = pd.DataFrame(entries)
-        df["Timestamp"] = pd.to_datetime(df["Timestamp"])
-
-        st.dataframe(df, use_container_width=True)
-
-        # Mood chart
-        mood_counts = df["Mood"].value_counts()
-        st.bar_chart(mood_counts)
-
-        # Export as CSV
-        csv = df.to_csv(index=False).encode('utf-8')
-        st.download_button("📥 Download Mood Logs (CSV)", csv, "mood_logs.csv", "text/csv")
-
-    else:
-        st.info("No entries found yet.")
-
-except Exception as e:
-    st.error(f"⚠️ Failed to fetch data: {e}")
