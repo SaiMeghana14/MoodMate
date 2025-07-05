@@ -24,6 +24,8 @@ if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
 
+# ✅ Optional test message (you can remove later)
+st.success("✅ Firebase initialized successfully.")
 
 # -----------------------
 # 🎯 Main App UI
