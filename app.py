@@ -14,7 +14,9 @@ st.title("🧠 MoodMate – Your Mood Companion")
 # -------------------------------
 # 🔐 Firebase Initialization
 # -------------------------------
-firebase_config = dict(st.secrets["firebase"])
+import json
+firebase_config = json.loads(st.secrets["firebase"].to_json())
+
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
