@@ -1,4 +1,5 @@
 streamlit
 firebase-admin
-transformers
-torch
+textblob
+pandas
+openai
