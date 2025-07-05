@@ -1,7 +1,6 @@
 import openai
 import streamlit as st
 
-# Load OpenAI API Key
 openai.api_key = st.secrets["api"]["openai_key"]
 
 def analyze_mood(user_input):
@@ -25,8 +24,6 @@ Respond in this exact JSON format:
                 {"role": "user", "content": prompt}
             ]
         )
-
-        # Extract result
         import json
         result_json = response['choices'][0]['message']['content']
         result = json.loads(result_json)
