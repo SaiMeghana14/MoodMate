@@ -12,15 +12,15 @@ st.set_page_config(page_title="MoodMate", page_icon="🧠")
 # ---------------------------------------
 # 🔐 Firebase Initialization from secrets
 # ---------------------------------------
-# ✅ Convert st.secrets["firebase"] to a valid dict
+# ✅ Fix: Convert ConfigObj → Dict
 firebase_config = json.loads(json.dumps(st.secrets["firebase"]))
-
-# ✅ Pass it to Firebase
-cred = credentials.Certificate(firebase_config)
 
 # ✅ Initialize Firebase only once
 if not firebase_admin._apps:
+    cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
+st.write("Firebase loaded:", firebase_config["project_id"])
+
 
 # -----------------------
 # 🎯 Main App UI
