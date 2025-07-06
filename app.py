@@ -21,6 +21,14 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 
+try:
+    db = firestore.client()
+    docs = db.collection("mood_entries").limit(1).stream()
+    for doc in docs:
+        st.success(f"✅ Firestore read success: {doc.id}")
+except Exception as e:
+    st.error(f"🚨 Firestore access error: {e}")
+
 # -------------------------------
 # Toggle Online/Offline Mode
 # -------------------------------
