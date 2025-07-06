@@ -2,12 +2,13 @@ import streamlit as st
 import json
 import random
 
-# Import OpenAI only if online mode is used
+# Try importing OpenAI only in online mode
 try:
     import openai
-    openai.api_key = st.secrets["api"]["openai_key"]
+    from openai import OpenAI
+    openai_client = OpenAI(api_key=st.secrets["api"]["openai_key"])
 except:
-    pass
+    openai_client = None
 
 offline_moods = [
     {"mood": "Positive", "emoji": "😊"},
@@ -16,9 +17,9 @@ offline_moods = [
 ]
 
 def analyze_mood(user_input, use_openai=True):
-    if use_openai:
+    if use_openai and openai_client:
         prompt = f"""
-You are an expert mood detection assistant. 
+You are an expert mood detection assistant.
 Classify the user's emotion from the message below into one of the following moods:
 Positive, Negative, or Neutral.
 Then also return a fitting emoji.
@@ -29,15 +30,14 @@ Respond in this exact JSON format:
 {{"mood": "Positive", "emoji": "😊"}}
 """
         try:
-            response = openai.ChatCompletion.create(
+            response = openai_client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful and emotionally intelligent assistant."},
                     {"role": "user", "content": prompt}
                 ]
             )
-
-            result_json = response['choices'][0]['message']['content']
+            result_json = response.choices[0].message.content
             result = json.loads(result_json)
             return result["mood"], result["emoji"]
 
