@@ -43,3 +43,10 @@ Respond in this exact JSON format:
             return "Negative", "😔"
         else:
             return "Neutral", "😐"
+    except Exception as e:
+        if "insufficient_quota" in str(e):
+            st.warning("⚠️ OpenAI quota exceeded. Switching to offline mode.")
+            return offline_mood_analysis(user_input)  # your fallback logic
+        else:
+            st.error(f"⚠️ OpenAI error: {e}")
+            return "Neutral", "😐"
