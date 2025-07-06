@@ -1,6 +1,4 @@
 streamlit
-firebase-admin
-textblob
-pandas
-openai>=1.0.0
-
+nltk
+transformers
+torch
