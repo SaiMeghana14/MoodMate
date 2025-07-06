@@ -1,36 +1,52 @@
-# ✅ analyzer.py (VADER-based offline mood detection)
-
 import streamlit as st
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-analyzer = SentimentIntensityAnalyzer()
+# Ensure VADER lexicon is downloaded
+try:
+    nltk.data.find("sentiment/vader_lexicon.zip")
+except LookupError:
+    nltk.download("vader_lexicon")
 
-# Toggle: select TextBlob or VADER
-use_textblob = st.sidebar.toggle("Use TextBlob (Simple)", value=False)
+# Initialize VADER
+vader = SentimentIntensityAnalyzer()
 
-if use_textblob:
-    from textblob import TextBlob
+# Hugging Face transformer
+from transformers import pipeline
 
-def analyze_mood(user_input):
-    try:
-        if use_textblob:
-            analysis = TextBlob(user_input)
-            polarity = analysis.sentiment.polarity
-            if polarity > 0:
-                return "Positive", "😊"
-            elif polarity < 0:
-                return "Negative", "😔"
-            else:
-                return "Neutral", "😐"
+@st.cache_resource
+def get_hf_pipeline():
+    return pipeline("sentiment-analysis")
+
+try:
+    hf_analyzer = get_hf_pipeline()
+except Exception as e:
+    hf_analyzer = None
+    st.warning("⚠️ Hugging Face model not available. Using offline mode only.")
+
+def analyze_mood(user_input, mode="Offline"):
+    if mode == "Offline":
+        scores = vader.polarity_scores(user_input)
+        compound = scores["compound"]
+        if compound >= 0.05:
+            return "Positive", "😊"
+        elif compound <= -0.05:
+            return "Negative", "😔"
         else:
-            score = analyzer.polarity_scores(user_input)
-            compound = score["compound"]
-            if compound >= 0.3:
+            return "Neutral", "😐"
+
+    elif mode == "Online" and hf_analyzer is not None:
+        try:
+            result = hf_analyzer(user_input)[0]
+            label = result["label"]
+            if label == "POSITIVE":
                 return "Positive", "😊"
-            elif compound <= -0.3:
+            elif label == "NEGATIVE":
                 return "Negative", "😔"
             else:
                 return "Neutral", "😐"
-    except Exception as e:
-        st.error(f"⚠️ Mood analysis failed: {e}")
+        except Exception as e:
+            st.error(f"⚠️ Error using Hugging Face: {e}")
+            return "Neutral", "😐"
+    else:
         return "Neutral", "😐"
