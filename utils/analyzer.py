@@ -1,37 +1,36 @@
-import streamlit as st
+# Sentiment analysis logic using VADER and Hugging Face Transformers
+import nltk
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from transformers import pipeline
 
-USE_HUGGINGFACE = st.secrets.get("use_huggingface", False)
+# Download required resources
+nltk.download("vader_lexicon", quiet=True)
 
-if USE_HUGGINGFACE:
-    from transformers import pipeline
-    classifier = pipeline("text-classification", model="bhadresh-savani/bert-base-uncased-emotion")
-else:
-    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-    analyzer = SentimentIntensityAnalyzer()
+# Initialize analyzers
+vader = SentimentIntensityAnalyzer()
+huggingface_pipeline = pipeline("sentiment-analysis")
 
-def analyze_mood(user_input):
-    if USE_HUGGINGFACE:
-        result = classifier(user_input)[0]
-        label = result['label'].capitalize()
-        if label in ["Joy", "Love"]:
-            mood = "Positive"
-            emoji = "😊"
-        elif label in ["Anger", "Sadness", "Fear"]:
-            mood = "Negative"
-            emoji = "😢"
+def analyze_mood(text, use_transformer=False):
+    """
+    Returns (mood, emoji) based on input text.
+    Uses Hugging Face if use_transformer=True, else VADER (offline).
+    """
+    if use_transformer:
+        result = huggingface_pipeline(text)[0]
+        label = result["label"]
+
+        if "POSITIVE" in label:
+            return "Positive", "😊"
+        elif "NEGATIVE" in label:
+            return "Negative", "😞"
         else:
-            mood = "Neutral"
-            emoji = "😐"
+            return "Neutral", "😐"
     else:
-        scores = analyzer.polarity_scores(user_input)
+        scores = vader.polarity_scores(text)
         compound = scores["compound"]
         if compound >= 0.05:
-            mood = "Positive"
-            emoji = "🙂"
+            return "Positive", "😊"
         elif compound <= -0.05:
-            mood = "Negative"
-            emoji = "☹️"
+            return "Negative", "😞"
         else:
-            mood = "Neutral"
-            emoji = "😐"
-    return mood, emoji
+            return "Neutral", "😐"
