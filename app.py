@@ -77,26 +77,43 @@ db = firestore.client()
    
 # --------------------------------------
 # 📈 Mood History Graph
-# --------------------------------------
-st.markdown("---")
+
 st.subheader("📊 Mood Trend")
 
-# 🔍 View Mood History with Trend
-docs = db.collection("moods").where("user", "==", user).stream()
-history_data = []
+# Ensure 'user' is defined
+user = st.session_state.get("user", "guest")
 
-for doc in docs:
-    doc_dict = doc.to_dict()
-    if "timestamp" in doc_dict and "mood" in doc_dict:
-        history_data.append({
-            "timestamp": doc_dict["timestamp"],
-            "mood": doc_dict["mood"]
-        })
+try:
+    docs = db.collection("moods").where("user", "==", user).stream()
+    history_data = []
 
-if history_data:
-    plot_mood_trend(history_data)
-else:
-    st.info("No mood history found to plot.")
+    for doc in docs:
+        doc_dict = doc.to_dict()
+        if "timestamp" in doc_dict and "mood" in doc_dict:
+            history_data.append({
+                "timestamp": doc_dict["timestamp"],
+                "mood": doc_dict["mood"]
+            })
+
+    if history_data:
+        df = pd.DataFrame(history_data)
+        df = df.sort_values("timestamp")
+
+        # Convert timestamp to datetime (if needed)
+        if not pd.api.types.is_datetime64_any_dtype(df["timestamp"]):
+            df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+        # Optional mapping of moods to numbers
+        mood_map = {"Positive": 1, "Neutral": 0, "Negative": -1}
+        df["mood_value"] = df["mood"].map(mood_map)
+
+        # Plot using Streamlit
+        st.line_chart(data=df, x="timestamp", y="mood_value", use_container_width=True)
+    else:
+        st.info("No mood history found for this user.")
+
+except Exception as e:
+    st.error(f"⚠️ Failed to load mood history: {e}")
 
 
 # -------------------------------
