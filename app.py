@@ -75,7 +75,7 @@ user = st.session_state.get("user", "guest")
 from firebase_admin import firestore
 db = firestore.client()
 
-# --------------------------------------
+
 # 📈 Mood History Graph
 
 st.subheader("📊 Mood Trend")
@@ -113,8 +113,6 @@ try:
 
 except Exception as e:
     st.error(f"⚠️ Error loading mood trend: {e}")
-
-
 
 # -------------------------------
 # 📓 Daily Journal
