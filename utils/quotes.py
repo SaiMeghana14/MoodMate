@@ -1,25 +1,21 @@
-import random
+# Motivational quotes based on mood
 
 def get_motivational_quote(mood):
-    positive_quotes = [
-        "Keep shining, the world needs your light!",
-        "Your smile can change someone’s day.",
-        "Great things are coming your way!"
-    ]
-    negative_quotes = [
-        "It's okay to feel down. Brighter days are ahead.",
-        "Take a deep breath, you’re doing great.",
-        "This too shall pass. You’ve got this!"
-    ]
-    neutral_quotes = [
-        "Every moment is a fresh beginning.",
-        "Keep moving forward, even small steps count.",
-        "Stay grounded and trust the process."
-    ]
-
-    if mood == "Positive":
-        return random.choice(positive_quotes)
-    elif mood == "Negative":
-        return random.choice(negative_quotes)
-    else:
-        return random.choice(neutral_quotes)
+    quotes = {
+        "Positive": [
+            "Keep shining and stay awesome!",
+            "Your positivity is contagious!",
+            "Stay grateful and keep growing!"
+        ],
+        "Neutral": [
+            "Every day is a new chance to grow.",
+            "Stay balanced and keep moving.",
+            "Take one step at a time."
+        ],
+        "Negative": [
+            "Tough times never last, but tough people do.",
+            "You're stronger than you think.",
+            "Every storm runs out of rain."
+        ]
+    }
+    return quotes.get(mood, ["You're doing great!"])[0]
