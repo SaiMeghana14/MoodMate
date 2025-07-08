@@ -89,6 +89,7 @@ for doc in docs:
         })
 
 if history_data:
+    history_data.sort(key=lambda x: x["timestamp"])
     plot_mood_trend(history_data)
 else:
     st.info("No mood history found to plot.")
