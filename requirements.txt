@@ -9,3 +9,7 @@ transformers
 torch
 SpeechRecognition
 pydub
+vaderSentiment
+scikit-learn
+python-dotenv
+altair
