@@ -68,6 +68,13 @@ if st.button("🔍 Analyze Mood") and user_input:
         "timestamp": datetime.datetime.now()
     })
 
+# Ensure user is set
+user = st.session_state.get("user", "guest")
+
+# Ensure Firebase DB is ready
+from firebase_admin import firestore
+db = firestore.client()
+   
 # --------------------------------------
 # 📈 Mood History Graph
 # --------------------------------------
