@@ -74,7 +74,7 @@ user = st.session_state.get("user", "guest")
 # Ensure Firebase DB is ready
 from firebase_admin import firestore
 db = firestore.client()
-   
+
 # --------------------------------------
 # 📈 Mood History Graph
 
@@ -99,21 +99,21 @@ try:
         df = pd.DataFrame(history_data)
         df = df.sort_values("timestamp")
 
-        # Convert timestamp to datetime (if needed)
+        # Convert timestamp to datetime if not already
         if not pd.api.types.is_datetime64_any_dtype(df["timestamp"]):
             df["timestamp"] = pd.to_datetime(df["timestamp"])
 
-        # Optional mapping of moods to numbers
+        # Map mood strings to values
         mood_map = {"Positive": 1, "Neutral": 0, "Negative": -1}
         df["mood_value"] = df["mood"].map(mood_map)
 
-        # Plot using Streamlit
         st.line_chart(data=df, x="timestamp", y="mood_value", use_container_width=True)
     else:
         st.info("No mood history found for this user.")
 
 except Exception as e:
-    st.error(f"⚠️ Failed to load mood history: {e}")
+    st.error(f"⚠️ Error loading mood trend: {e}")
+
 
 
 # -------------------------------
