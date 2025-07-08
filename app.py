@@ -1,23 +1,88 @@
 import streamlit as st
+import firebase_admin
+from firebase_admin import credentials, firestore
 from utils.analyzer import analyze_mood
 from utils.quotes import get_motivational_quote
+from utils.music import recommend_music
+from utils.voice_input import transcribe_voice
+from utils.auth import user_login
+from utils.graph import plot_mood_trend
+import pandas as pd
+import datetime
 
-# Page settings
-st.set_page_config(page_title="🧠 MoodMate", layout="centered")
+# Set Streamlit page config
+st.set_page_config(page_title="MoodMate", page_icon="🧠")
 
+# -------------------------------
+# 🔐 Firebase Initialization
+# -------------------------------
+firebase_config = dict(st.secrets["firebase"])
+if not firebase_admin._apps:
+    cred = credentials.Certificate(firebase_config)
+    firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+# -------------------------------
+# 👤 User Login
+# -------------------------------
+user = user_login()
+if not user:
+    st.stop()
+
+# -------------------------------
+# 🎙️ Voice or Text Input
+# -------------------------------
 st.title("🧠 MoodMate – Your Mood Companion")
-st.subheader("📝 How are you feeling today?")
+input_mode = st.radio("Choose Input Mode:", ["📝 Text", "🎤 Voice"])
 
-# Input from user
-user_input = st.text_input("Describe your mood or day:", "")
+user_input = ""
+if input_mode == "📝 Text":
+    user_input = st.text_area("How are you feeling today?")
+elif input_mode == "🎤 Voice":
+    user_input = transcribe_voice()
 
-# Mode selection
-mode = st.radio("Select Mode:", ["Offline", "Online"])
+# -------------------------------
+# 💬 Chatbot Toggle
+# -------------------------------
+chatbot_mode = st.toggle("Enable AI Chatbot Response")
 
-if st.button("🔍 Analyze Mood") and user_input.strip():
-    mood, emoji = analyze_mood(user_input, mode)
-    st.markdown(f"### Your mood is **{mood}** {emoji}")
-    
-    if mood != "Neutral":
-        quote = get_motivational_quote()
-        st.success(f"💬 Motivational Quote: _\"{quote}\"_")
+# -------------------------------
+# 🧠 Analyze Mood
+# -------------------------------
+if st.button("🔍 Analyze Mood") and user_input:
+    mood, emoji = analyze_mood(user_input)
+    st.subheader(f"Your mood is {mood} {emoji}")
+
+    # 🔖 Motivational Quote
+    quote = get_motivational_quote(mood)
+    st.info(f"💡 Motivation: {quote}")
+
+    # 🎶 Music Suggestion
+    track = recommend_music(mood)
+    st.audio(track)
+
+    # 🗒️ Save Entry
+    entry = {
+        "text": user_input,
+        "mood": mood,
+        "emoji": emoji,
+        "timestamp": datetime.datetime.now(),
+        "user": user
+    }
+    db.collection("mood_entries").add(entry)
+
+# -------------------------------
+# 📈 Mood History Graph
+# -------------------------------
+st.markdown("---")
+st.subheader("📊 Mood Trend")
+plot_mood_trend(user, db)
+
+# -------------------------------
+# 📓 Daily Journal
+# -------------------------------
+st.subheader("📓 Daily Journal")
+journal_text = st.text_area("Write your thoughts for the day")
+if st.button("Save Journal Entry"):
+    db.collection("journals").add({"text": journal_text, "user": user, "timestamp": datetime.datetime.now()})
+    st.success("📝 Journal entry saved!")
