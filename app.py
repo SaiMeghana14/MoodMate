@@ -88,7 +88,11 @@ for doc in docs:
             "mood": doc_dict["mood"]
         })
 
-plot_mood_trend(history_data)
+if history_data:
+    plot_mood_trend(history_data)
+else:
+    st.info("No mood history found to plot.")
+
 
 # -------------------------------
 # 📓 Daily Journal
