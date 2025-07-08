@@ -71,48 +71,49 @@ if st.button("🔍 Analyze Mood") and user_input:
 # Ensure user is set
 user = st.session_state.get("user", "guest")
 
-# Ensure Firebase DB is ready
+import pandas as pd
 from firebase_admin import firestore
+
+# ✅ Firestore client
 db = firestore.client()
 
-
 # 📈 Mood History Graph
-
 st.subheader("📊 Mood Trend")
 
-# Ensure 'user' is defined
+# 🧑‍💼 Get user (fallback to 'guest')
 user = st.session_state.get("user", "guest")
 
 try:
+    # 🔄 Fetch mood history
     docs = db.collection("moods").where("user", "==", user).stream()
-    history_data = []
+    mood_data = []
 
     for doc in docs:
-        doc_dict = doc.to_dict()
-        if "timestamp" in doc_dict and "mood" in doc_dict:
-            history_data.append({
-                "timestamp": doc_dict["timestamp"],
-                "mood": doc_dict["mood"]
+        data = doc.to_dict()
+        if "timestamp" in data and "mood" in data:
+            mood_data.append({
+                "timestamp": pd.to_datetime(data["timestamp"]),
+                "mood": data["mood"]
             })
 
-    if history_data:
-        df = pd.DataFrame(history_data)
-        df = df.sort_values("timestamp")
-
-        # Convert timestamp to datetime if not already
-        if not pd.api.types.is_datetime64_any_dtype(df["timestamp"]):
-            df["timestamp"] = pd.to_datetime(df["timestamp"])
-
-        # Map mood strings to values
+    if not mood_data:
+        st.info("No mood history found for this user.")
+    else:
+        # 🔢 Convert moods to values for plotting
         mood_map = {"Positive": 1, "Neutral": 0, "Negative": -1}
+        df = pd.DataFrame(mood_data)
         df["mood_value"] = df["mood"].map(mood_map)
 
-        st.line_chart(data=df, x="timestamp", y="mood_value", use_container_width=True)
-    else:
-        st.info("No mood history found for this user.")
+        # 🕒 Sort by time
+        df = df.sort_values("timestamp")
+
+        # 📊 Plot the mood trend
+        st.line_chart(df.set_index("timestamp")[["mood_value"]])
 
 except Exception as e:
-    st.error(f"⚠️ Error loading mood trend: {e}")
+    st.error("⚠️ Failed to load mood trend data.")
+    st.exception(e)
+
 
 # -------------------------------
 # 📓 Daily Journal
