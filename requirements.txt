@@ -1,4 +1,11 @@
 streamlit
+firebase-admin
+openai
+requests
+matplotlib
+pandas
 nltk
 transformers
 torch
+SpeechRecognition
+pydub
