@@ -1,25 +1,33 @@
-import streamlit as st
 import pandas as pd
 import altair as alt
+import streamlit as st
 
-def plot_mood_trend(user, db):
-    docs = db.collection(\"mood_entries\").where(\"user\", \"==\", user).stream()
-    data = [{
-        \"timestamp\": doc.to_dict()[\"timestamp\"],
-        \"mood\": doc.to_dict()[\"mood\"]
-    } for doc in docs]
-
+def plot_mood_trend(data):
+    """
+    Expects data as a list of dictionaries with keys: 'timestamp', 'mood'
+    """
     if not data:
-        st.warning(\"No mood history found.\")
+        st.warning("No mood history to show.")
         return
 
     df = pd.DataFrame(data)
-    df[\"timestamp\"] = pd.to_datetime(df[\"timestamp\"])
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+    mood_colors = {
+        'Positive': 'green',
+        'Negative': 'red',
+        'Neutral': 'gray'
+    }
 
     chart = alt.Chart(df).mark_line(point=True).encode(
         x='timestamp:T',
         y=alt.Y('mood:N', sort=['Negative', 'Neutral', 'Positive']),
+        color=alt.Color('mood:N', scale=alt.Scale(domain=list(mood_colors.keys()), range=list(mood_colors.values()))),
         tooltip=['timestamp:T', 'mood:N']
-    ).properties(title=\"Mood Over Time\", width=600)
+    ).properties(
+        width=700,
+        height=400,
+        title='Mood Trend Over Time'
+    )
 
     st.altair_chart(chart, use_container_width=True)
