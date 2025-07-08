@@ -1,150 +1,172 @@
 import streamlit as st
 import datetime
+import pandas as pd
 from utils.analyzer import analyze_mood
 from utils.quotes import get_motivational_quote
 from utils.graph import plot_mood_trend
 from utils.music import play_motivational_music
 from utils.voice_input import record_and_transcribe
-from utils.auth import login_form
+from utils.auth import login_form, authenticate_user
 import firebase_admin
 from firebase_admin import credentials, firestore
+import base64
 
-# Page settings
-st.set_page_config(page_title="🧠 MoodMate", page_icon="🧠")
+# ------------------
+# 🎨 Custom CSS Theme
+# ------------------
+def load_custom_css():
+    css = """
+    <style>
+        .main {background-color: #f5f7fa;}
+        .stApp {padding: 1rem;}
+        .sidebar .sidebar-content {background-color: #e6f2ff;}
+        .st-bb {border-radius: 0.5rem; padding: 1rem;}
+        .stButton>button {border-radius: 8px; background-color: #4a90e2; color: white; font-weight: bold;}
+        .stButton>button:hover {background-color: #357ABD;}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
 
-# Login / Signup UI
-login_form()
+load_custom_css()
 
-# Prevent access until login
-if "uid" not in st.session_state:
-    st.warning("Please login to use MoodMate features.")
-    st.stop()
-
-# Logged in user's UID and email
-user_uid = st.session_state["uid"]
-user_email = st.session_state["email"]
-
-user = login_form()
-st.sidebar.info(f"👤 UID: {user}")  # ✅ This will show the UID
-
-# --------------------------------------
+# ------------------------
 # 🔐 Firebase Initialization
-# --------------------------------------
+# ------------------------
 firebase_config = dict(st.secrets["firebase"])
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# --------------------------------------
-# 👤 User Authentication
-# --------------------------------------
-user = authenticate_user()
-if not user:
-    st.warning("Please login to continue.")
+# ------------------------
+# 👤 Login & Auth Check
+# ------------------------
+login_form()
+if "uid" not in st.session_state:
+    st.warning("Please login to use MoodMate features.")
     st.stop()
+user_uid = st.session_state["uid"]
+user_email = st.session_state["email"]
 
-# --------------------------------------
-# 🌐 Online/Offline Mode Toggle
-# --------------------------------------
+# -----------------------------
+# 🧭 Sidebar Navigation (Dashboard)
+# -----------------------------
+st.sidebar.title("🧠 MoodMate Dashboard")
+page = st.sidebar.radio("Go to", ["Mood Tracker", "Mood History", "Journal", "Achievements"])
+
+# ----------------------------
+# ⚙️ Settings (OpenAI Toggle)
+# ----------------------------
 st.sidebar.header("⚙️ Settings")
 use_openai = st.sidebar.toggle("Use OpenAI API (Online Mode)", value=False)
 
-# --------------------------------------
-# 🧠 Mood Input Section
-# --------------------------------------
-st.title("🧠 MoodMate – Your Mood Companion")
-st.markdown("### 📝 How are you feeling today?")
+# ----------------------------
+# 📘 Mood Tracker Page
+# ----------------------------
+if page == "Mood Tracker":
+    st.title("📝 How are you feeling today?")
+    user_input = st.text_area("Write something...", placeholder="I'm feeling neutral.")
 
-user_input = st.text_area("Write something...", placeholder="I'm feeling neutral.")
+    if st.button("🎤 Use Voice Input"):
+        user_input = record_and_transcribe()
+        st.success("Captured voice input!")
 
-# 🎙️ Voice Input (Optional)
-if st.button("🎤 Use Voice Input"):
-    user_input = record_and_transcribe()
-    st.success("Captured voice input!")
+    if st.button("🔍 Analyze Mood") and user_input:
+        mood, emoji = analyze_mood(user_input, use_openai)
+        st.markdown(f"### Your mood is **{mood}** {emoji}")
 
-if st.button("🔍 Analyze Mood") and user_input:
-    mood, emoji = analyze_mood(user_input)
-    st.markdown(f"**Your mood is:** {mood} {emoji}")
+        quote = get_motivational_quote(mood)
+        st.info(f"💬 {quote}")
 
-    # ✅ Save to Firestore with UID
-    db.collection("moods").add({
-        "text": user_input,
-        "mood": mood,
-        "emoji": emoji,
-        "user": user,  # UID returned from login_form()
-        "timestamp": firestore.SERVER_TIMESTAMP
-    })
+        play_motivational_music(mood)
 
-    st.markdown(f"### Your mood is **{mood}** {emoji}")
-    st.session_state["mood"] = mood
+        db.collection("moods").add({
+            "text": user_input,
+            "mood": mood,
+            "emoji": emoji,
+            "user": user_uid,
+            "email": user_email,
+            "timestamp": firestore.SERVER_TIMESTAMP
+        })
 
-    quote = get_motivational_quote(mood)
-    st.info(f"💬 {quote}")
+# ----------------------------
+# 📊 Mood History Page
+# ----------------------------
+elif page == "Mood History":
+    st.title("📊 Your Mood History")
 
-    play_motivational_music(mood)
+    try:
+        docs = db.collection("moods").where("user", "==", user_uid).stream()
+        mood_data = []
 
-    # Save mood entry
-    db.collection("moods").add({
-        "user": user,
-        "text": user_input,
-        "mood": mood,
-        "emoji": emoji,
-        "timestamp": datetime.datetime.now()
-    })
+        for doc in docs:
+            data = doc.to_dict()
+            if "timestamp" in data and "mood" in data:
+                mood_data.append({
+                    "timestamp": pd.to_datetime(data["timestamp"].isoformat()),
+                    "mood": data["mood"],
+                    "emoji": data.get("emoji", "")
+                })
 
-# Ensure user is set
-user = st.session_state.get("user", "guest")
+        if mood_data:
+            df = pd.DataFrame(mood_data).sort_values("timestamp")
+            df["mood_icon"] = df["emoji"] + " " + df["mood"]
+            st.dataframe(df[["timestamp", "mood_icon"]].rename(columns={"mood_icon": "Mood"}))
 
-import pandas as pd
-from firebase_admin import firestore
+            st.download_button("📥 Download as CSV", df.to_csv(index=False), "mood_history.csv")
 
-# ✅ Firestore client
-db = firestore.client()
+            plot_mood_trend(user_uid, db)
+        else:
+            st.info("No mood history found.")
+    except Exception as e:
+        st.error("⚠️ Failed to load mood history.")
+        st.exception(e)
 
-# 📈 Mood History Graph
-st.subheader("📊 Mood Trend")
+# ----------------------------
+# 📓 Journal Page
+# ----------------------------
+elif page == "Journal":
+    st.title("📓 Daily Journal")
+    journal_text = st.text_area("Write your thoughts for the day")
+    if st.button("Save Journal Entry"):
+        db.collection("journals").add({
+            "text": journal_text,
+            "user": user_uid,
+            "timestamp": datetime.datetime.now()
+        })
+        st.success("📝 Journal entry saved!")
 
-# 🧑‍💼 Get user (fallback to 'guest')
-user = st.session_state.get("user", "guest")
+    st.markdown("### 📚 Past Entries")
+    entries = db.collection("journals").where("user", "==", user_uid).order_by("timestamp", direction=firestore.Query.DESCENDING).stream()
+    for entry in entries:
+        data = entry.to_dict()
+        st.markdown(f"**{data['timestamp'].strftime('%Y-%m-%d %H:%M')}**: {data['text']}")
 
-try:
-    # 🔄 Fetch mood history
-    docs = db.collection("moods").where("user", "==", user).stream()
-    mood_data = []
+# ----------------------------
+# 🏆 Achievements Page
+# ----------------------------
+elif page == "Achievements":
+    st.title("🏆 Your MoodMate Achievements")
+    st.markdown("### 🎯 Based on your mood tracking:")
 
+    docs = db.collection("moods").where("user", "==", user_uid).stream()
+    mood_counts = {"Positive": 0, "Neutral": 0, "Negative": 0}
+    total = 0
     for doc in docs:
-        data = doc.to_dict()
-        if "timestamp" in data and "mood" in data:
-            mood_data.append({
-                "timestamp": pd.to_datetime(data["timestamp"]),
-                "mood": data["mood"]
-            })
+        mood = doc.to_dict().get("mood")
+        if mood in mood_counts:
+            mood_counts[mood] += 1
+            total += 1
 
-    if not mood_data:
-        st.info("No mood history found for this user.")
+    if total:
+        st.metric("Total Moods Tracked", total)
+        st.metric("😊 Positive Days", mood_counts["Positive"])
+        st.metric("😐 Neutral Days", mood_counts["Neutral"])
+        st.metric("☹️ Negative Days", mood_counts["Negative"])
+
+        if mood_counts["Positive"] >= 5:
+            st.success("🏅 Positivity Badge Unlocked!")
+        if total >= 10:
+            st.success("🌟 Consistency Badge Unlocked!")
     else:
-        # 🔢 Convert moods to values for plotting
-        mood_map = {"Positive": 1, "Neutral": 0, "Negative": -1}
-        df = pd.DataFrame(mood_data)
-        df["mood_value"] = df["mood"].map(mood_map)
-
-        # 🕒 Sort by time
-        df = df.sort_values("timestamp")
-
-        # 📊 Plot the mood trend
-        st.line_chart(df.set_index("timestamp")[["mood_value"]])
-
-except Exception as e:
-    st.error("⚠️ Failed to load mood trend data.")
-    st.exception(e)
-
-
-# -------------------------------
-# 📓 Daily Journal
-# -------------------------------
-st.subheader("📓 Daily Journal")
-journal_text = st.text_area("Write your thoughts for the day")
-if st.button("Save Journal Entry"):
-    db.collection("journals").add({"text": journal_text, "user": user, "timestamp": datetime.datetime.now()})
-    st.success("📝 Journal entry saved!")
+        st.info("Track your mood to unlock achievements!")
