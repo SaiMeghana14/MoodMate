@@ -2,7 +2,7 @@
 import streamlit as st
 import pyrebase
 
-firebase_config = dict(st.secrets["firebase"])
+firebase_config = st.secrets["firebase"]
 firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 
