@@ -1,0 +1,79 @@
+/* ---- GENERAL ---- */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9fc;
+  color: #222;
+}
+
+/* ---- TITLES ---- */
+h1, h2, h3 {
+  font-family: 'Segoe UI Semibold', sans-serif;
+  color: #222;
+  animation: fadeIn 1s ease-in;
+}
+
+/* ---- CENTERED CONTAINERS ---- */
+.centered {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ---- GLOWING BUTTON ---- */
+.glow-button {
+  font-size: 18px;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background: linear-gradient(135deg, #4CAF50, #00c27e);
+  box-shadow: 0 0 8px #00c27e, 0 0 16px #00c27e, 0 0 24px #00c27e;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 15px #66ff99, 0 0 25px #66ff99, 0 0 35px #66ff99;
+  transform: scale(1.05);
+}
+
+/* ---- FADE-IN ANIMATION ---- */
+.fade-in {
+  animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- CUSTOM TEXTBOX ---- */
+textarea {
+  border: 1px solid #ccc !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+  background-color: #fff !important;
+}
+
+/* ---- SIDEBAR STYLING ---- */
+section[data-testid="stSidebar"] {
+  background-color: #f0f2f6;
+  border-right: 2px solid #eee;
+}
+
+/* ---- EXPORT BUTTON ---- */
+.download-button {
+  background-color: #5b8def;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #4073e6;
+  box-shadow: 0 0 10px #4073e6;
+}
