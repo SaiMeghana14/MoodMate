@@ -5,12 +5,27 @@ from utils.quotes import get_motivational_quote
 from utils.graph import plot_mood_trend
 from utils.music import play_motivational_music
 from utils.voice_input import record_and_transcribe
-from utils.auth import authenticate_user
+from utils.auth import login_form
 import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Page settings
 st.set_page_config(page_title="🧠 MoodMate", page_icon="🧠")
+
+# Login / Signup UI
+login_form()
+
+# Prevent access until login
+if "uid" not in st.session_state:
+    st.warning("Please login to use MoodMate features.")
+    st.stop()
+
+# Logged in user's UID and email
+user_uid = st.session_state["uid"]
+user_email = st.session_state["email"]
+
+user = login_form()
+st.sidebar.info(f"👤 UID: {user}")  # ✅ This will show the UID
 
 # --------------------------------------
 # 🔐 Firebase Initialization
@@ -49,7 +64,17 @@ if st.button("🎤 Use Voice Input"):
     st.success("Captured voice input!")
 
 if st.button("🔍 Analyze Mood") and user_input:
-    mood, emoji = analyze_mood(user_input, use_openai)
+    mood, emoji = analyze_mood(user_input)
+    st.markdown(f"**Your mood is:** {mood} {emoji}")
+
+    # ✅ Save to Firestore with UID
+    db.collection("moods").add({
+        "text": user_input,
+        "mood": mood,
+        "emoji": emoji,
+        "user": user,  # UID returned from login_form()
+        "timestamp": firestore.SERVER_TIMESTAMP
+    })
 
     st.markdown(f"### Your mood is **{mood}** {emoji}")
     st.session_state["mood"] = mood
