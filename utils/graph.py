@@ -1,33 +1,35 @@
-import pandas as pd
-import altair as alt
+import matplotlib.pyplot as plt
 import streamlit as st
+import pandas as pd
 
-def plot_mood_trend(data):
-    """
-    Expects data as a list of dictionaries with keys: 'timestamp', 'mood'
-    """
-    if not data:
-        st.warning("No mood history to show.")
+def plot_mood_trend(history_data):
+    if not history_data:
+        st.warning("No mood data to plot.")
         return
 
-    df = pd.DataFrame(data)
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    # Convert to DataFrame
+    df = pd.DataFrame(history_data)
 
-    mood_colors = {
-        'Positive': 'green',
-        'Negative': 'red',
-        'Neutral': 'gray'
-    }
+    # Ensure columns exist
+    if "timestamp" not in df.columns or "mood" not in df.columns:
+        st.error("Invalid data format for plotting.")
+        return
 
-    chart = alt.Chart(df).mark_line(point=True).encode(
-        x='timestamp:T',
-        y=alt.Y('mood:N', sort=['Negative', 'Neutral', 'Positive']),
-        color=alt.Color('mood:N', scale=alt.Scale(domain=list(mood_colors.keys()), range=list(mood_colors.values()))),
-        tooltip=['timestamp:T', 'mood:N']
-    ).properties(
-        width=700,
-        height=400,
-        title='Mood Trend Over Time'
-    )
+    # Convert timestamp to datetime
+    df["timestamp"] = pd.to_datetime(df["timestamp"], errors='coerce')
+    df.dropna(subset=["timestamp"], inplace=True)
 
-    st.altair_chart(chart, use_container_width=True)
+    # Map mood to score
+    mood_map = {"Positive": 1, "Neutral": 0, "Negative": -1}
+    df["mood_score"] = df["mood"].map(mood_map)
+
+    # Sort and plot
+    df.sort_values("timestamp", inplace=True)
+    fig, ax = plt.subplots()
+    ax.plot(df["timestamp"], df["mood_score"], marker='o')
+    ax.set_title("Mood Trend Over Time")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Mood Score")
+    ax.grid(True)
+
+    st.pyplot(fig)
