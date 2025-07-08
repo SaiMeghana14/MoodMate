@@ -1,18 +1,23 @@
-import streamlit as st
+# Convert voice input to text using SpeechRecognition
 import speech_recognition as sr
+from pydub import AudioSegment
+from pydub.playback import play
+import streamlit as st
 
-def transcribe_voice():
-    recognizer = sr.Recognizer()
+def record_and_transcribe():
+    r = sr.Recognizer()
+    st.info("🎙️ Listening... Please speak now.")
+    
     with sr.Microphone() as source:
-        st.info("🎙️ Listening... Please speak now.")
-        audio = recognizer.listen(source)
+        audio = r.listen(source, timeout=5, phrase_time_limit=10)
+        st.success("✅ Voice captured!")
+
     try:
-        text = recognizer.recognize_google(audio)
-        st.success("✅ Transcription complete!")
+        text = r.recognize_google(audio)
+        st.info(f"🗣️ You said: {text}")
         return text
     except sr.UnknownValueError:
-        st.error("❌ Could not understand audio.")
-        return ""
+        st.warning("❌ Couldn't understand the audio.")
     except sr.RequestError:
-        st.error("❌ Error with the speech recognition service.")
-        return ""
+        st.error("⚠️ API unavailable.")
+    return ""
