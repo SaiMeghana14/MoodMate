@@ -1,83 +1,79 @@
 import streamlit as st
-import firebase_admin
-from firebase_admin import credentials, firestore
+import datetime
 from utils.analyzer import analyze_mood
 from utils.quotes import get_motivational_quote
-from utils.music import recommend_music
-from utils.voice_input import transcribe_voice
-from utils.auth import user_login
 from utils.graph import plot_mood_trend
-import pandas as pd
-import datetime
+from utils.music import play_motivational_music
+from utils.voice_input import record_and_transcribe
+from utils.auth import authenticate_user
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-# Set Streamlit page config
-st.set_page_config(page_title="MoodMate", page_icon="🧠")
+# Page settings
+st.set_page_config(page_title="🧠 MoodMate", page_icon="🧠")
 
-# -------------------------------
+# --------------------------------------
 # 🔐 Firebase Initialization
-# -------------------------------
+# --------------------------------------
 firebase_config = dict(st.secrets["firebase"])
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# -------------------------------
-# 👤 User Login
-# -------------------------------
-user = user_login()
+# --------------------------------------
+# 👤 User Authentication
+# --------------------------------------
+user = authenticate_user()
 if not user:
+    st.warning("Please login to continue.")
     st.stop()
 
-# -------------------------------
-# 🎙️ Voice or Text Input
-# -------------------------------
+# --------------------------------------
+# 🌐 Online/Offline Mode Toggle
+# --------------------------------------
+st.sidebar.header("⚙️ Settings")
+use_openai = st.sidebar.toggle("Use OpenAI API (Online Mode)", value=False)
+
+# --------------------------------------
+# 🧠 Mood Input Section
+# --------------------------------------
 st.title("🧠 MoodMate – Your Mood Companion")
-input_mode = st.radio("Choose Input Mode:", ["📝 Text", "🎤 Voice"])
+st.markdown("### 📝 How are you feeling today?")
 
-user_input = ""
-if input_mode == "📝 Text":
-    user_input = st.text_area("How are you feeling today?")
-elif input_mode == "🎤 Voice":
-    user_input = transcribe_voice()
+user_input = st.text_area("Write something...", placeholder="I'm feeling neutral.")
 
-# -------------------------------
-# 💬 Chatbot Toggle
-# -------------------------------
-chatbot_mode = st.toggle("Enable AI Chatbot Response")
+# 🎙️ Voice Input (Optional)
+if st.button("🎤 Use Voice Input"):
+    user_input = record_and_transcribe()
+    st.success("Captured voice input!")
 
-# -------------------------------
-# 🧠 Analyze Mood
-# -------------------------------
 if st.button("🔍 Analyze Mood") and user_input:
-    mood, emoji = analyze_mood(user_input)
-    st.subheader(f"Your mood is {mood} {emoji}")
+    mood, emoji = analyze_mood(user_input, use_openai)
 
-    # 🔖 Motivational Quote
+    st.markdown(f"### Your mood is **{mood}** {emoji}")
+    st.session_state["mood"] = mood
+
     quote = get_motivational_quote(mood)
-    st.info(f"💡 Motivation: {quote}")
+    st.info(f"💬 {quote}")
 
-    # 🎶 Music Suggestion
-    track = recommend_music(mood)
-    st.audio(track)
+    play_motivational_music(mood)
 
-    # 🗒️ Save Entry
-    entry = {
+    # Save mood entry
+    db.collection("moods").add({
+        "user": user,
         "text": user_input,
         "mood": mood,
         "emoji": emoji,
-        "timestamp": datetime.datetime.now(),
-        "user": user
-    }
-    db.collection("mood_entries").add(entry)
+        "timestamp": datetime.datetime.now()
+    })
 
-# -------------------------------
+# --------------------------------------
 # 📈 Mood History Graph
-# -------------------------------
+# --------------------------------------
 st.markdown("---")
 st.subheader("📊 Mood Trend")
 
-# 🔍 View Mood History with Trend
 docs = db.collection("moods").where("user", "==", user).stream()
 history_data = []
 
@@ -90,7 +86,7 @@ for doc in docs:
         })
 
 if history_data:
-    history_data.sort(key=lambda x: x["timestamp"])  # (Optional)
+    history_data.sort(key=lambda x: x["timestamp"])
     plot_mood_trend(history_data)
 else:
     st.info("No mood history found to plot.")
