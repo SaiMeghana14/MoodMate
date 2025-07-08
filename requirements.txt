@@ -1,6 +1,6 @@
 streamlit
 firebase-admin
-openai
+openai>=1.0.0
 requests
 matplotlib
 pandas
@@ -13,3 +13,5 @@ vaderSentiment
 scikit-learn
 python-dotenv
 altair
+PyJWT           # If Firebase custom token auth is used
+google-cloud-firestore  # To ensure Firestore works even outside firebase-admin
