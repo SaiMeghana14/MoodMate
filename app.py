@@ -76,6 +76,7 @@ if st.button("🔍 Analyze Mood") and user_input:
 # -------------------------------
 st.markdown("---")
 st.subheader("📊 Mood Trend")
+
 # 🔍 View Mood History with Trend
 docs = db.collection("moods").where("user", "==", user).stream()
 history_data = []
@@ -89,11 +90,10 @@ for doc in docs:
         })
 
 if history_data:
-    history_data.sort(key=lambda x: x["timestamp"])
+    history_data.sort(key=lambda x: x["timestamp"])  # (Optional)
     plot_mood_trend(history_data)
 else:
     st.info("No mood history found to plot.")
-
 
 # -------------------------------
 # 📓 Daily Journal
