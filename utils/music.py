@@ -1,4 +1,5 @@
 # Play motivational music based on mood
+
 import streamlit as st
 
 def play_motivational_music(mood):
@@ -10,3 +11,4 @@ def play_motivational_music(mood):
     audio_url = tracks.get(mood)
     if audio_url:
         st.audio(audio_url)
+
