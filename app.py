@@ -76,7 +76,19 @@ if st.button("🔍 Analyze Mood") and user_input:
 # -------------------------------
 st.markdown("---")
 st.subheader("📊 Mood Trend")
-plot_mood_trend(user, db)
+# 🔍 View Mood History with Trend
+docs = db.collection("moods").where("user", "==", user).stream()
+history_data = []
+
+for doc in docs:
+    doc_dict = doc.to_dict()
+    if "timestamp" in doc_dict and "mood" in doc_dict:
+        history_data.append({
+            "timestamp": doc_dict["timestamp"],
+            "mood": doc_dict["mood"]
+        })
+
+plot_mood_trend(history_data)
 
 # -------------------------------
 # 📓 Daily Journal
