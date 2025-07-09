@@ -1,23 +1,33 @@
 import streamlit as st
+import webbrowser
 import json
 
 def activities_page():
-    st.subheader("🎧 Relaxation & Motivation")
+    st.subheader("🎧 AI-Based Suggestions & Relaxation")
+
+    mood = st.selectbox("How are you feeling?", ["Happy", "Sad", "Stressed", "Energetic", "Calm"])
     
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st_lottie("assets/meditation.json", height=200)
-        st.write("Meditation")
+    if mood == "Stressed":
+        st.video("https://www.youtube.com/watch?v=ZToicYcHIOU")  # Breathing exercise
+    elif mood == "Happy":
+        st.video("https://www.youtube.com/watch?v=3GwjfUFyY6M")  # Celebration music
+    elif mood == "Sad":
+        st.video("https://www.youtube.com/watch?v=ho9rZjlsyYY")  # Peaceful piano
+    elif mood == "Calm":
+        st.video("https://www.youtube.com/watch?v=2OEL4P1Rz04")  # Guided meditation
+    elif mood == "Energetic":
+        st.video("https://www.youtube.com/watch?v=BoEKWtgJQAU")  # Workout beats
 
-    with col2:
-        st_lottie("assets/achievements.json", height=200)
-        st.write("Your Achievements")
+    if st.button("🎵 Open Spotify Wellness Playlist"):
+        webbrowser.open_new_tab("https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0")
 
-    with col3:
-        st_lottie("assets/chatbot.json", height=200)
-        st.write("Mindful Chatbot")
+    st.markdown("## 🧘 Breathing Animation")
+    st_lottie("assets/meditation.json", 250)
 
 def st_lottie(filepath, height=300):
     with open(filepath, "r") as f:
         data = json.load(f)
-        st.components.v1.html(f\"\"\"\n        <script src=\"https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js\"></script>\n        <lottie-player src='data:application/json;base64,{data}' background=\"transparent\" speed=\"1\" style=\"height: {height}px;\" loop autoplay></lottie-player>\n        \"\"\", height=height)
+        st.components.v1.html(f"""
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <lottie-player src='data:application/json;base64,{json.dumps(data)}' background='transparent' speed='1' style='width:100%; height:{height}px;' loop autoplay></lottie-player>
+        """, height=height)
