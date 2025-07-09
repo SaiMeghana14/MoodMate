@@ -10,7 +10,7 @@ from utils.dashboard import mood_dashboard_page
 from utils.activities import activities_page
 from utils.voice_journal import voice_journal_page
 from utils.emergency import emergency_alert_button
-from utils.landing import show_landing_page
+from utils.landing import show_landing_page_with_animations
 
 st.set_page_config(
     page_title="MoodMate – Smart Mental Wellness Companion",
