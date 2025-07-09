@@ -11,46 +11,48 @@ from utils.gamify import show_achievements, update_streaks
 from utils.ui import set_theme_by_mood
 import datetime
 
-st.set_page_config(page_title="MoodMate – Your AI Buddy", layout="centered")
+# ✅ Load CSS styling
+with open("assets/styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Load style sheet
-try:
-    with open("assets/styles.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-except FileNotFoundError:
-    st.warning("⚠️ Custom CSS file not found. Using default styles.")
+# ✅ Main App Logic
+st.set_page_config(page_title="MoodMate", layout="wide")
+st.title("🧠 MoodMate – Your AI-Powered Mental Health Buddy")
 
-st.markdown("<h1 class='title'>🌈 MoodMate – Your AI Mental Health Buddy</h1>", unsafe_allow_html=True)
-
-# Authenticate User
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    login_form()
+    with st.form("Login"):
+        username, password = login_form()
+        submit = st.form_submit_button("Login")
+        if submit and authenticate_user(username, password):
+            st.session_state.authenticated = True
+            st.success("Login successful!")
+        elif submit:
+            st.error("Invalid credentials")
 else:
     st.sidebar.success("Logged in")
     menu = ["Mood Journal", "Dashboard", "MoodBot", "Activities", "Meditation", "Achievements"]
     choice = st.sidebar.selectbox("Navigate", menu)
 
-    if choice == "Mood Journal":
-        st.subheader("📝 Mood Journal")
-        entry = st.text_area("How are you feeling today?", height=200)
-        if st.button("Submit Entry"):
-            mood = detect_mood(entry)
-            save_entry(entry, mood)
-            st.success(f"Your entry has been saved! Detected mood: {mood}")
-            set_theme_by_mood(mood)
-            update_streaks(mood)
+    if choice == "Journal":
+        st.subheader("📝 Daily Journal")
+        st.markdown("<div class='frame'>", unsafe_allow_html=True)
+        journal_entry()
+        st.markdown("</div>", unsafe_allow_html=True)
 
         if st.button("📤 Export Journal as PDF"):
             export_pdf()
 
+    
     elif choice == "Dashboard":
-        st.subheader("📊 Your Mood Dashboard")
+        st.subheader("📊 Mood Insights")
+        st.markdown("<div class='frame'>", unsafe_allow_html=True)
         plot_mood_trends()
         mood_heatmap()
         show_wordcloud()
+        st.markdown("</div>", unsafe_allow_html=True)
 
     elif choice == "MoodBot":
         st.subheader("🤖 Talk to MoodBot")
@@ -59,21 +61,21 @@ else:
             response = chat_with_bot(user_input)
             st.markdown(f"**MoodBot:** {response}")
 
-    elif choice == "Activities":
+     elif choice == "Activities":
         st.subheader("🧠 Mood-Boosting Activities")
-        st.markdown("<div class='mood-card neutral'>", unsafe_allow_html=True)
-        from utils.activities import gratitude_spinner, journal_prompt, uplifting_quote
+
+        st.markdown("<div class='frame mood-card neutral'>", unsafe_allow_html=True)
         gratitude_spinner()
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown("<div class='mood-card happy'>", unsafe_allow_html=True)
+        st.markdown("<div class='frame mood-card happy'>", unsafe_allow_html=True)
         journal_prompt()
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown("<div class='mood-card anxious'>", unsafe_allow_html=True)
+        st.markdown("<div class='frame mood-card anxious'>", unsafe_allow_html=True)
         uplifting_quote()
         st.markdown("</div>", unsafe_allow_html=True)
-
+         
     elif choice == "Meditation":
         st.subheader("🧘‍♀️ Mindfulness Zone")
         breathing_exercise()
