@@ -60,11 +60,19 @@ else:
             st.markdown(f"**MoodBot:** {response}")
 
     elif choice == "Activities":
-        st.subheader("💡 Personalized Suggestions")
-        mood = st.selectbox("Choose your current mood", ["Happy", "Sad", "Anxious", "Tired", "Neutral"])
-        suggestions = get_suggestions(mood)
-        for s in suggestions:
-            st.markdown(f"- {s}")
+        st.subheader("🧠 Mood-Boosting Activities")
+        st.markdown("<div class='mood-card neutral'>", unsafe_allow_html=True)
+        from utils.activities import gratitude_spinner, journal_prompt, uplifting_quote
+        gratitude_spinner()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='mood-card happy'>", unsafe_allow_html=True)
+        journal_prompt()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='mood-card anxious'>", unsafe_allow_html=True)
+        uplifting_quote()
+        st.markdown("</div>", unsafe_allow_html=True)
 
     elif choice == "Meditation":
         st.subheader("🧘‍♀️ Mindfulness Zone")
