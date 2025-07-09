@@ -9,7 +9,10 @@ def load_lottiefile(filepath):
     with open(filepath, "r") as f:
         return json.load(f)
 
+# ✅ Load custom styles.css
 def show_landing_page_with_animations():
+    with open("styles.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     st.markdown("""
         <style>
             .section {
