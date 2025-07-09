@@ -7,9 +7,9 @@ def login_form():
     if st.button("Login"):
         if authenticate_user(username, password):
             st.session_state.authenticated = True
-            st.success("Login successful!")
+            st.success(f"Welcome, {username.split('@')[0]}!")
         else:
             st.error("Invalid credentials.")
 
 def authenticate_user(username, password):
-    return username == "user" and password == "pass"
+    return st.secrets["credentials"].get(username) == password
