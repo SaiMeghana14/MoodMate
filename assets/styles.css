@@ -1,7 +1,8 @@
-/* ------------------------
-   🌈 MoodMate App Styles
------------------------- */
+/* ================================
+   🌈 MoodMate – Global App Styles
+   ================================ */
 
+/* Base Styling */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #fefefe;
@@ -10,7 +11,7 @@ body {
   padding: 0;
 }
 
-/* Container Styling */
+/* Layout & Containers */
 .section {
   padding: 4rem 2rem;
   margin-bottom: 2rem;
@@ -18,39 +19,46 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
+/* Hero Section */
 .hero {
   background: linear-gradient(to right, #ffdde1, #ee9ca7);
   text-align: center;
   color: #111;
 }
 
+/* Core Features */
 .features {
   background: linear-gradient(to right, #c9ffbf, #ffafbd);
 }
 
+/* Testimonials Section */
 .testimonials {
   background: linear-gradient(to right, #fbc2eb, #a6c1ee);
   font-style: italic;
 }
 
+/* Team Section */
 .team {
   background: linear-gradient(to right, #d4fc79, #96e6a1);
 }
 
+/* FAQs Section */
 .faq {
   background: linear-gradient(to right, #84fab0, #8fd3f4);
 }
 
+/* Impact Stories */
 .impact {
   background: linear-gradient(to right, #fccb90, #d57eeb);
 }
 
+/* Call to Action Section */
 .cta {
   background: linear-gradient(to right, #fdfbfb, #ebedee);
   text-align: center;
 }
 
-/* Typography */
+/* Headings */
 h1, h2, h3, h4 {
   font-weight: 600;
   margin-top: 0;
@@ -84,7 +92,13 @@ input, textarea, select {
   font-size: 1rem;
 }
 
-/* Responsive Design */
+/* Sidebar styling */
+.css-1d391kg, .css-1v3fvcr {
+  color: #6c63ff !important;
+  font-weight: bold;
+}
+
+/* Responsive Layout */
 @media screen and (max-width: 768px) {
   .section {
     padding: 2rem 1rem;
@@ -108,7 +122,7 @@ input, textarea, select {
   }
 }
 
-/* Dark Mode (auto-detect) */
+/* Optional: Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   body {
     background: #1f1f1f;
@@ -131,4 +145,29 @@ input, textarea, select {
   button:hover {
     background-color: #7b5fff;
   }
+}
+
+/* ================================
+   🧠 Custom Tweaks & Extras
+   ================================ */
+
+/* Centered Lottie Box */
+.lottie-box {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Custom Sidebar Highlight */
+.sidebar-title {
+  color: #6c63ff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Gradient text headers */
+.gradient-text {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
