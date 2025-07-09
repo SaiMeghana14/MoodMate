@@ -49,3 +49,52 @@ button[kind="primary"] {
   border-radius: 8px !important;
   font-weight: bold;
 }
+
+/* Frame container styles */
+.frame {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin: 20px 0;
+}
+
+.header-title {
+  font-size: 36px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #6C63FF, #AB47BC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(to right, #6C63FF, #AB47BC);
+  margin: 16px 0;
+  border-radius: 2px;
+}
+
+.card-hover:hover {
+  transform: scale(1.02);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 10px 25px rgba(108, 99, 255, 0.2);
+}
+
+# ✅ Updated Activities UI in app.py
+# Wrap activity blocks in styled 'frame' divs
+    elif choice == "Activities":
+        st.subheader("🧠 Mood-Boosting Activities")
+        st.markdown("<div class='frame mood-card neutral'>", unsafe_allow_html=True)
+        from utils.activities import gratitude_spinner, journal_prompt, uplifting_quote
+        gratitude_spinner()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='frame mood-card happy'>", unsafe_allow_html=True)
+        journal_prompt()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        st.markdown("<div class='frame mood-card anxious'>", unsafe_allow_html=True)
+        uplifting_quote()
+        st.markdown("</div>", unsafe_allow_html=True)
