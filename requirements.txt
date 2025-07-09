@@ -2,3 +2,9 @@ streamlit
 textblob
 matplotlib
 pandas
+seaborn
+fpdf
+wordcloud
+numpy
+scikit-learn
+python-dateutil
