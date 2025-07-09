@@ -1,100 +1,134 @@
-# ✅ assets/styles.css
-.title {
-  font-size: 32px;
-  text-align: center;
-  color: #6C63FF;
-  margin-bottom: 20px;
-  font-family: 'Segoe UI', sans-serif;
-}
+/* ------------------------
+   🌈 MoodMate App Styles
+------------------------ */
 
 body {
-  background-color: #f8f9fa;
   font-family: 'Segoe UI', sans-serif;
+  background: #fefefe;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-/* Mood-specific cards */
-.mood-card {
-  padding: 16px;
-  border-radius: 12px;
-  margin: 10px 0;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+/* Container Styling */
+.section {
+  padding: 4rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  transition: all 0.3s ease-in-out;
 }
 
-.happy {
-  background-color: #FFF9C4;
-}
-.sad {
-  background-color: #BBDEFB;
-}
-.anxious {
-  background-color: #D1C4E9;
-}
-.tired {
-  background-color: #CFD8DC;
-}
-.neutral {
-  background-color: #E0E0E0;
+.hero {
+  background: linear-gradient(to right, #ffdde1, #ee9ca7);
+  text-align: center;
+  color: #111;
 }
 
-/* Journal text area */
-textarea {
-  border-radius: 10px !important;
-  padding: 10px !important;
-  font-size: 16px !important;
+.features {
+  background: linear-gradient(to right, #c9ffbf, #ffafbd);
 }
 
-/* Button Styling */
-button[kind="primary"] {
-  background-color: #6C63FF !important;
-  border-radius: 8px !important;
-  font-weight: bold;
+.testimonials {
+  background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+  font-style: italic;
 }
 
-/* Frame container styles */
-.frame {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  margin: 20px 0;
+.team {
+  background: linear-gradient(to right, #d4fc79, #96e6a1);
 }
 
-.header-title {
-  font-size: 36px;
-  font-weight: bold;
-  background: linear-gradient(90deg, #6C63FF, #AB47BC);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.faq {
+  background: linear-gradient(to right, #84fab0, #8fd3f4);
+}
+
+.impact {
+  background: linear-gradient(to right, #fccb90, #d57eeb);
+}
+
+.cta {
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
   text-align: center;
 }
 
-.section-divider {
-  height: 2px;
-  background: linear-gradient(to right, #6C63FF, #AB47BC);
-  margin: 16px 0;
-  border-radius: 2px;
+/* Typography */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  margin-top: 0;
 }
 
-.card-hover:hover {
-  transform: scale(1.02);
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 10px 25px rgba(108, 99, 255, 0.2);
+p {
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-# ✅ Updated Activities UI in app.py
-# Wrap activity blocks in styled 'frame' divs
-    elif choice == "Activities":
-        st.subheader("🧠 Mood-Boosting Activities")
-        st.markdown("<div class='frame mood-card neutral'>", unsafe_allow_html=True)
-        from utils.activities import gratitude_spinner, journal_prompt, uplifting_quote
-        gratitude_spinner()
-        st.markdown("</div>", unsafe_allow_html=True)
+/* Buttons */
+button, .stButton > button {
+  background-color: #6c63ff;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
 
-        st.markdown("<div class='frame mood-card happy'>", unsafe_allow_html=True)
-        journal_prompt()
-        st.markdown("</div>", unsafe_allow_html=True)
+button:hover {
+  background-color: #5548c8;
+}
 
-        st.markdown("<div class='frame mood-card anxious'>", unsafe_allow_html=True)
-        uplifting_quote()
-        st.markdown("</div>", unsafe_allow_html=True)
+/* Input Fields */
+input, textarea, select {
+  border-radius: 8px !important;
+  border: 1px solid #ccc !important;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .section {
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  p, li {
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* Dark Mode (auto-detect) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1f1f1f;
+    color: #eee;
+  }
+
+  .section {
+    border: 1px solid #444;
+  }
+
+  input, textarea {
+    background: #2b2b2b !important;
+    color: #fff !important;
+  }
+
+  button {
+    background-color: #8a74ff;
+  }
+
+  button:hover {
+    background-color: #7b5fff;
+  }
+}
