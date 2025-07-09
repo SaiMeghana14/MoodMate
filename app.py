@@ -6,7 +6,7 @@ from utils.quotes import get_motivational_quote
 from utils.graph import plot_mood_trend
 from utils.music import play_motivational_music
 from utils.voice_input import record_and_transcribe
-from utils.auth import login_form, authenticate_user
+from utils.auth import login_form
 
 # --------------------------------------
 # 📘 Custom CSS Theme
