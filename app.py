@@ -11,13 +11,27 @@ from utils.emergency import emergency_page
 from utils.privacy import privacy_settings_page
 from utils.lang_support import language_settings_page
 from utils.mood_predictor import mood_predictor_page
+from utils.auth import login_form, signup_form
+from utils.daily_journal import daily_journal_page
+from utils.mood_tracker import mood_tracker_page
+from utils.achievements import achievements_page
+
+# Show login first
+if "user" not in st.session_state:
+    st.sidebar.title("🔐 Authentication")
+    auth_choice = st.sidebar.radio("Login or Signup", ["Login", "Signup"])
+    if auth_choice == "Login":
+        if not login_form():
+            st.stop()
+    else:
+        signup_form()
+        st.stop()
 
 # Sidebar Menu
 st.sidebar.title("🧠 MoodMate Navigation")
 menu = [
-    "Home", "Mood Journal", "Voice Journal", "Chatbot", "Dashboard",
-    "Activities", "Therapy Bot", "Gamification", "Emergency",
-    "Privacy", "Language", "Mood Predictor"
+    "Home", "Daily Journal", "Mood Tracker", "Achievements",
+    "Voice Journal", "Chatbot", "Dashboard", "Activities", "Therapy Bot", "Gamification", "Emergency", "Privacy", "Language", "Mood Predictor"
 ]
 choice = st.sidebar.radio("Go to", menu)
 
@@ -46,3 +60,9 @@ elif choice == "Language":
     language_settings_page()
 elif choice == "Mood Predictor":
     mood_predictor_page()
+elif choice == "Daily Journal":
+    daily_journal_page()
+elif choice == "Mood Tracker":
+    mood_tracker_page()
+elif choice == "Achievements":
+    achievements_page()
