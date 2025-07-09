@@ -1,42 +1,48 @@
-# utils/auth.py
 import streamlit as st
 import pyrebase
 
-firebase_config = {
-    "apiKey": st.secrets["firebase"]["apiKey"],
-    "authDomain": st.secrets["firebase"]["authDomain"],
-    "projectId": st.secrets["firebase"]["projectId"],
-    "storageBucket": st.secrets["firebase"]["storageBucket"],
-    "messagingSenderId": st.secrets["firebase"]["messagingSenderId"],
-    "appId": st.secrets["firebase"]["appId"],
-    "measurementId": st.secrets["firebase"]["measurementId"],
-    "databaseURL": st.secrets["firebase"]["databaseURL"]  # ✅ don't forget this
-}
+# Firebase Config - Loaded from Streamlit secrets
+firebase_config = st.secrets["firebase"]
 
-firebase_config = dict(st.secrets["firebase"])
+# Initialize Firebase app
 firebase = pyrebase.initialize_app(firebase_config)
 auth = firebase.auth()
 db = firebase.database()
 
+# Save db to session state for reuse
+st.session_state["db"] = db
+
+# ----------------------------
+# 🔐 Login / Signup Form
+# ----------------------------
 def login_form():
-    st.sidebar.title("🔐 Login to MoodMate")
+    st.sidebar.title("🔐 Login / Signup")
+
+    mode = st.sidebar.radio("Choose Mode", ["Login", "Signup"])
 
     email = st.sidebar.text_input("Email")
     password = st.sidebar.text_input("Password", type="password")
-    
-    if st.sidebar.button("Login"):
-        try:
-            user = auth.sign_in_with_email_and_password(email, password)
-            st.session_state["uid"] = user["localId"]
-            st.session_state["email"] = email
-            st.session_state["db"] = db
-            st.sidebar.success("✅ Logged in!")
-        except:
-            st.sidebar.error("❌ Login failed. Please check credentials.")
-    
-    if st.sidebar.button("Sign Up"):
-        try:
-            user = auth.create_user_with_email_and_password(email, password)
-            st.sidebar.success("✅ Account created. You can now log in.")
-        except:
-            st.sidebar.error("⚠️ Account already exists or invalid.")
+
+    if mode == "Signup":
+        if st.sidebar.button("Create Account"):
+            try:
+                user = auth.create_user_with_email_and_password(email, password)
+                st.success("✅ Account created successfully! Please login.")
+            except Exception as e:
+                st.error(f"Signup failed: {e}")
+    else:
+        if st.sidebar.button("Login"):
+            try:
+                user = auth.sign_in_with_email_and_password(email, password)
+                st.session_state["uid"] = user["localId"]
+                st.session_state["email"] = email
+                st.session_state["token"] = user["idToken"]
+                st.rerun()
+            except Exception as e:
+                st.error(f"Login failed: {e}")
+
+# ----------------------------
+# ✅ Check if Authenticated
+# ----------------------------
+def authenticate_user():
+    return st.session_state.get("uid", None)
