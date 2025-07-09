@@ -4,6 +4,7 @@ import json
 
 # Helper to load Lottie animations
 from streamlit.components.v1 import html
+
 def load_lottiefile(filepath):
     with open(filepath, "r") as f:
         return json.load(f)
@@ -25,6 +26,15 @@ def show_landing_page_with_animations():
             }
             .testimonials {
                 background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+            }
+            .team {
+                background: linear-gradient(to right, #d4fc79, #96e6a1);
+            }
+            .faq {
+                background: linear-gradient(to right, #84fab0, #8fd3f4);
+            }
+            .impact {
+                background: linear-gradient(to right, #fccb90, #d57eeb);
             }
             .cta {
                 background: linear-gradient(to right, #fdfbfb, #ebedee);
@@ -70,6 +80,41 @@ def show_landing_page_with_animations():
             > *"MoodMate has changed how I check in with myself each day. I feel heard and supported."* – Ananya
 
             > *"The breathing and affirmations really help me stay grounded during exams."* – Rahul
+        """)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Team Section
+    with st.container():
+        st.markdown('<div class="section team">', unsafe_allow_html=True)
+        st.markdown("""
+            ## 👥 Meet the Team
+            - **Sai Meghana K** – Product Lead & Frontend
+            - **John Doe** – AI/ML Engineer
+            - **Jane Smith** – UX Designer & Research
+        """)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # FAQ Section
+    with st.container():
+        st.markdown('<div class="section faq">', unsafe_allow_html=True)
+        st.markdown("""
+            ## ❓ Frequently Asked Questions
+            **Is my data private?** Yes, MoodMate supports end-to-end encryption.
+
+            **Do I need internet for this?** Only for syncing and AI features.
+
+            **Can I use this offline?** Yes, basic journaling and breathing tools work offline.
+        """)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Impact Stories
+    with st.container():
+        st.markdown('<div class="section impact">', unsafe_allow_html=True)
+        st.markdown("""
+            ## 💡 Real Impact
+            "Before MoodMate, I used to bottle everything inside. Now I reflect and heal every day." – Priya, Student
+
+            "Our college mental health club recommends MoodMate to help students cope better." – Mentor
         """)
         st.markdown("</div>", unsafe_allow_html=True)
 
