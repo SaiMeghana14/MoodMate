@@ -1,6 +1,7 @@
 import streamlit as st
 import base64
 import json
+from streamlit_lottie import st_lottie
 
 # Helper to load Lottie animations
 from streamlit.components.v1 import html
