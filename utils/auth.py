@@ -40,3 +40,4 @@ def signup_form():
             users[username] = {"password": password, "journals": {}, "streak": 0}
             save_users(users)
             st.success("Account created! Please log in.")
+
