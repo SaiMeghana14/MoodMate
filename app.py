@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.landing import show_landing_page_with_animations
-from utils.mood_journal import mood_journal_page
+from utils.mood_journal import mood_journal_app
 from utils.voice_journal import voice_journal_page
 from utils.chatbot import chatbot_page
 from utils.dashboard import dashboard_page
@@ -30,8 +30,8 @@ if "user" not in st.session_state:
 # Sidebar Menu
 st.sidebar.title("🧠 MoodMate Navigation")
 menu = [
-    "Home", "Daily Journal", "Mood Tracker", "Achievements",
-    "Voice Journal", "Chatbot", "Dashboard", "Activities", "Therapy Bot", "Gamification", "Emergency", "Privacy", "Language", "Mood Predictor"
+    "Home", "Mood Journal", "Mood Tracker", "Achievements",
+ "Chatbot", "Dashboard", "Activities", "Therapy Bot", "Gamification", "Emergency", "Privacy", "Language", "Mood Predictor"
 ]
 choice = st.sidebar.radio("Go to", menu)
 
@@ -40,8 +40,6 @@ if choice == "Home":
     show_landing_page_with_animations()
 elif choice == "Mood Journal":
     mood_journal_page()
-elif choice == "Voice Journal":
-    voice_journal_page()
 elif choice == "Chatbot":
     chatbot_page()
 elif choice == "Dashboard":
@@ -60,8 +58,6 @@ elif choice == "Language":
     language_settings_page()
 elif choice == "Mood Predictor":
     mood_predictor_page()
-elif choice == "Daily Journal":
-    daily_journal_page()
 elif choice == "Mood Tracker":
     mood_tracker_page()
 elif choice == "Achievements":
