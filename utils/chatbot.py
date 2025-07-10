@@ -9,3 +9,4 @@ def mental_health_chatbot_page():
     if user_input:
         response = chatbot(user_input, max_length=100)[0]['generated_text']
         st.text_area("MoodMate:", value=response.split(user_input)[-1], height=150)
+
