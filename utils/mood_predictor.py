@@ -21,3 +21,4 @@ def mood_predictor_page():
     text = "I'm stressed today but hopeful. Anxious about exams. Grateful for friends. Tired but peaceful. Relaxed and calm. Inspired!"
     wc = WordCloud(width=800, height=400).generate(text)
     st.image(wc.to_array())
+
