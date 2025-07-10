@@ -13,3 +13,4 @@ emoji
 lottie
 requests
 nltk
+seaborn
