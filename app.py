@@ -1,7 +1,6 @@
 import streamlit as st
 from utils.landing import show_landing_page_with_animations
 from utils.mood_journal import mood_journal_app
-from utils.voice_journal import voice_journal_page
 from utils.chatbot import chatbot_page
 from utils.dashboard import dashboard_page
 from utils.activities import activities_page
@@ -15,6 +14,10 @@ from utils.auth import login_form, signup_form
 from utils.daily_journal import daily_journal_page
 from utils.mood_tracker import mood_tracker_page
 from utils.achievements import achievements_page
+from utils.meditation import show_breathing_animation
+from utils.dashboard_utils import plot_mood_line_chart, plot_sentiment_bar_chart
+from utils.calendar_sync import show_calendar_integration
+
 
 # Show login first
 if "user" not in st.session_state:
@@ -30,8 +33,8 @@ if "user" not in st.session_state:
 # Sidebar Menu
 st.sidebar.title("🧠 MoodMate Navigation")
 menu = [
-    "Home", "Mood Journal", "Mood Tracker", "Achievements",
- "Chatbot", "Dashboard", "Activities", "Therapy Bot", "Gamification", "Emergency", "Privacy", "Language", "Mood Predictor"
+    "Home", "Mood Journal", "Mood Tracker", "Achievements", "Chatbot", "Dashboard", "Activities", "Therapy Bot", 
+    "Gamification", "Emergency", "Privacy", "Language", "Mood Predictor", "Meditation", "Mood Dashboard", "Calendar Sync"
 ]
 choice = st.sidebar.radio("Go to", menu)
 
@@ -62,3 +65,12 @@ elif choice == "Mood Tracker":
     mood_tracker_page()
 elif choice == "Achievements":
     achievements_page()
+elif choice == "Meditation":
+    show_breathing_animation()
+elif choice == "Mood Dashboard":
+    user_data = load_user_data(username)
+    journals = user_data.get("journals", {})
+    plot_mood_line_chart(journals)
+    plot_sentiment_bar_chart(journals)
+elif choice == "Calendar Sync":
+    show_calendar_integration()
