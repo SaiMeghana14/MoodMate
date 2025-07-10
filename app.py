@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.landing import show_landing_page_with_animations
+from landing_page import show_landing_page_with_animations
 from utils.mood_journal import mood_journal_app
 from utils.chatbot import chatbot_page
 from utils.dashboard import dashboard_page
