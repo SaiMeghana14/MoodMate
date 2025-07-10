@@ -84,16 +84,16 @@ def show_landing_page_with_animations():
         """)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # Team Section
-    with st.container():
-        st.markdown('<div class="section team">', unsafe_allow_html=True)
-        st.markdown("""
-            ## 👥 Meet the Team
-            - **Sai Meghana K** – Product Lead & Frontend
-            - **John Doe** – AI/ML Engineer
-            - **Jane Smith** – UX Designer & Research
-        """)
-        st.markdown("</div>", unsafe_allow_html=True)
+   # Solo Developer Section
+with st.container():
+    st.markdown('<div class="section team">', unsafe_allow_html=True)
+    st.markdown("""
+        ## 👤 Developer Spotlight  
+        - **K.N.V.Sai Meghana** – Developer, Designer & Creator of MoodMate  
+        Passionate about emotional well-being, I built MoodMate as a smart mental health companion blending AI, journaling, and self-care features.  
+    """)
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
     # FAQ Section
     with st.container():
