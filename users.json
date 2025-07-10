@@ -1,1 +1,12 @@
-{}
+{
+  "username": {
+    "journals": {
+      "2025-07-09": {
+        "mood": "😊",
+        "text": "I'm feeling great today!",
+        "sentiment": "Positive"
+      }
+    },
+    "streak": 0
+  }
+}
