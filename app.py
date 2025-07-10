@@ -39,9 +39,6 @@ if "user" not in st.session_state:
 
 import streamlit as st
 
-# Display logo (adjust path if needed)
-st.image("assets/logo.png", width=200)
-
 # Centered Logo, Title, and Slogan
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
