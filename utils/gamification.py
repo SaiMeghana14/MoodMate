@@ -14,4 +14,8 @@ def gamification_page():
 
     st.metric("🔥 Current Streak", f"{st.session_state['streak']} days")
     
-    badges = ["🌟 Consistency Badge", "📝 Journal Hero", "🧘‍♀️ Zen]()
+    badges = ["🌟 Consistency Badge", "📝 Journal Hero", "🧘‍♀️ Zen]
+    st.markdown("### 🎖️ Badges Earned:")
+    for badge in badges:
+        st.markdown(f"- {badge}")
+
