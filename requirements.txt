@@ -12,3 +12,4 @@ pydub
 emoji
 lottie
 requests
+nltk
