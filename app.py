@@ -42,9 +42,6 @@ import streamlit as st
 # Display logo (adjust path if needed)
 st.image("assets/logo.png", width=200)
 
-# Optional: App title and slogan
-st.markdown("## MoodMate")
-st.caption("Your Mind’s Best Mate")
 # Centered Logo, Title, and Slogan
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
