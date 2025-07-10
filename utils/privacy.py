@@ -11,4 +11,3 @@ def privacy_settings_page():
         st.info("Your data has been packaged for export (mockup).")
     if st.button("🗑️ Delete My Data"):
         st.warning("Your journal & chatbot history has been cleared (mockup).")
-
