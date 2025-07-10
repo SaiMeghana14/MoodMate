@@ -1,3 +1,11 @@
+import nltk
+
+# Ensure VADER lexicon is available
+try:
+    nltk.data.find('sentiment/vader_lexicon.zip')
+except LookupError:
+    nltk.download('vader_lexicon')
+    
 import streamlit as st
 from landing_page import show_landing_page_with_animations
 from utils.mood_journal import mood_journal_app
