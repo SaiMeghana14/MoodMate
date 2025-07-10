@@ -13,3 +13,4 @@ def language_settings_page():
 
     st.markdown(f"### ✨ Today's Affirmation in {lang}:")
     st.success(affirmations[lang])
+
