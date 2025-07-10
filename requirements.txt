@@ -14,3 +14,4 @@ lottie
 requests
 nltk
 seaborn
+wordcloud
