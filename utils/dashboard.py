@@ -8,6 +8,26 @@ from .journal import get_entries
 from collections import Counter
 import datetime
 
+def dashboard_page():
+    st.title("📊 Mood Tracker Dashboard")
+    
+    entries = get_entries()
+    if not entries:
+        st.warning("No mood entries yet.")
+        return
+
+    df = pd.DataFrame(entries)
+    df['date'] = pd.to_datetime(df['date'])
+
+    st.subheader("Mood Over Time")
+    mood_counts = df['mood'].value_counts()
+    st.bar_chart(mood_counts)
+
+    st.subheader("Common Words in Journals")
+    text = " ".join(df['text'].tolist())
+    wc = WordCloud(width=800, height=400, background_color='white').generate(text)
+    st.image(wc.to_array())
+    
 def plot_mood_trends():
     entries = get_entries()
     if not entries:
