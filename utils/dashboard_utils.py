@@ -22,3 +22,4 @@ def plot_sentiment_bar_chart(journals):
     df = pd.DataFrame(list(sentiment_counts.items()), columns=["Sentiment", "Count"])
     fig = px.bar(df, x="Sentiment", y="Count", title="Sentiment Distribution")
     st.plotly_chart(fig)
+
