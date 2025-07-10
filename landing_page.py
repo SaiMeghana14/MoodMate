@@ -57,8 +57,6 @@ def show_landing_page_with_animations():
             ## 🌈 Welcome to MoodMate
             #### Your smart companion for emotional wellness
         """)
-        st.image("assets/logo.png", width=150)
-        st.markdown("</div>", unsafe_allow_html=True)
 
     # Features Section
     with st.container():
