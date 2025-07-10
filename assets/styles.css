@@ -171,3 +171,14 @@ input, textarea, select {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.audio-transcription {
+  font-style: italic;
+  color: #555;
+}
+
+iframe {
+  border-radius: 12px;
+  max-width: 100%;
+}
+
