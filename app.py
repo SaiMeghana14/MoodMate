@@ -19,7 +19,6 @@ from utils.privacy import privacy_settings_page
 from utils.lang_support import language_settings_page
 from utils.mood_predictor import mood_predictor_page
 from utils.auth import login_form, signup_form
-from utils.daily_journal import daily_journal_page
 from utils.mood_tracker import mood_tracker_page
 from utils.achievements import achievements_page
 from utils.meditation import show_breathing_animation
