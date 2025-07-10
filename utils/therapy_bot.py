@@ -18,3 +18,4 @@ def therapy_bot_page():
     
     if st.button("💡 Reflect & Save"):
         st.success("Your responses have been saved privately. Try to revisit them later.")
+
