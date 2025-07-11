@@ -49,7 +49,8 @@ choice = st.sidebar.radio("Go to", menu)
 if choice == "Home":
     show_landing_page_with_animations()
 elif choice == "Mood Journal":
-    mood_journal_page()
+    username = st.session_state.get("username", "demo_user")
+    mood_journal_page(username)
 elif choice == "Chatbot":
     chatbot_page()
 elif choice == "Dashboard":
