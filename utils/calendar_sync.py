@@ -74,3 +74,5 @@ def add_journal_reminder():
 
     except Exception as e:
         st.error(f"An error occurred while syncing with Google Calendar: {e}")
+    if st.button("📅 Sync Journal Reminder to Google Calendar"):
+        add_journal_reminder()
