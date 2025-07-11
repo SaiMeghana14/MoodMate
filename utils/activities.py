@@ -1,6 +1,7 @@
 import streamlit as st
 import webbrowser
 import json
+from utils.lottie_loader import render_lottie
 
 def activities_page():
     st.subheader("🎧 AI-Based Suggestions & Relaxation")
