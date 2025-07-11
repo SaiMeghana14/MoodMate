@@ -92,7 +92,7 @@ To enable Google Calendar syncing:
 
 **K.N.V. Sai Meghana**
 
-- 💼 [LinkedIn](https://www.linkedin.com/in/naga-venkata-sai-meghana-kovvada131b51259)
+- 💼 [LinkedIn](https://www.linkedin.com/in/naga-venkata-sai-meghana-kovvada-131b51259)
 - 💻 [GitHub](https://github.com/SaiMeghana14)
 - 🧠 Creator of MoodMate for academic + personal project use
 
