@@ -22,7 +22,7 @@ def activities_page():
         webbrowser.open_new_tab("https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0")
 
     st.markdown("## 🧘 Breathing Animation")
-    st_lottie("assets/meditation.json", 250)
+    render_lottie("https://assets2.lottiefiles.com/packages/lf20_x62chJ.json", height=300, is_url=True)
 
 def st_lottie(filepath, height=300):
     with open(filepath, "r") as f:
