@@ -83,7 +83,7 @@ def transcribe_audio(audio_file):
             return "Speech recognition service error."
 
 # Main journaling function
-def mood_journal_app(username):
+def mood_journal_page(username):
     st.title("🎙️ Mood Journal with Voice Input")
     st.caption("Speak or type your thoughts, track your moods, and get support.")
 
