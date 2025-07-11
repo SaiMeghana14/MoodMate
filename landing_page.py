@@ -1,67 +1,26 @@
 import streamlit as st
-import base64
-import json
-from streamlit_lottie import st_lottie
-
-# Helper to load Lottie animations
-from streamlit.components.v1 import html
-
-def load_lottiefile(filepath):
-    with open(filepath, "r") as f:
-        return json.load(f)
+from utils.lottie_loader import render_lottie  # ✅ Correct import
 
 # ✅ Load custom styles.css
 def show_landing_page_with_animations():
     with open("styles.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    st.markdown("""
-        <style>
-            .section {
-                padding: 5rem 2rem;
-                border-radius: 20px;
-                margin-bottom: 3rem;
-            }
-            .hero {
-                background: linear-gradient(to right, #ffdde1, #ee9ca7);
-                text-align: center;
-            }
-            .features {
-                background: linear-gradient(to right, #c9ffbf, #ffafbd);
-            }
-            .testimonials {
-                background: linear-gradient(to right, #fbc2eb, #a6c1ee);
-            }
-            .team {
-                background: linear-gradient(to right, #d4fc79, #96e6a1);
-            }
-            .faq {
-                background: linear-gradient(to right, #84fab0, #8fd3f4);
-            }
-            .impact {
-                background: linear-gradient(to right, #fccb90, #d57eeb);
-            }
-            .cta {
-                background: linear-gradient(to right, #fdfbfb, #ebedee);
-                text-align: center;
-            }
-            h1, h2, h3 {
-                font-family: 'Segoe UI', sans-serif;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+
+    st.markdown("""...""", unsafe_allow_html=True)  # Keep your style block as is
 
     # Hero Section
     with st.container():
-        st_lottie("assets/meditation.json", 200)
+        render_lottie("assets/meditation.json", 200)
         st.markdown('<div class="section hero">', unsafe_allow_html=True)
         st.markdown("""
             ## 🌈 Welcome to MoodMate
             #### Your smart companion for emotional wellness
         """)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # Features Section
     with st.container():
-        st_lottie("assets/chatbot.json", 200)
+        render_lottie("assets/chatbot.json", 200)
         st.markdown('<div class="section features">', unsafe_allow_html=True)
         st.markdown("""
             ## ✨ Core Features
@@ -75,7 +34,7 @@ def show_landing_page_with_animations():
 
     # Testimonials Section
     with st.container():
-        st_lottie("assets/achievements.json", 200)
+        render_lottie("assets/achievements.json", 200)
         st.markdown('<div class="section testimonials">', unsafe_allow_html=True)
         st.markdown("""
             ## 💬 What Users Say
@@ -85,16 +44,15 @@ def show_landing_page_with_animations():
         """)
         st.markdown("</div>", unsafe_allow_html=True)
 
-   # Solo Developer Section
-with st.container():
-    st.markdown('<div class="section team">', unsafe_allow_html=True)
-    st.markdown("""
-        ## 👤 Developer Spotlight  
-        - **K.N.V.Sai Meghana** – Developer, Designer & Creator of MoodMate  
-        Passionate about emotional well-being, I built MoodMate as a smart mental health companion blending AI, journaling, and self-care features.  
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
+    # Solo Developer Section
+    with st.container():
+        st.markdown('<div class="section team">', unsafe_allow_html=True)
+        st.markdown("""
+            ## 👤 Developer Spotlight  
+            - **K.N.V. Sai Meghana** – Developer, Designer & Creator of MoodMate  
+            Passionate about emotional well-being, I built MoodMate as a smart mental health companion blending AI, journaling, and self-care features.  
+        """)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # FAQ Section
     with st.container():
@@ -122,28 +80,10 @@ with st.container():
 
     # CTA Section
     with st.container():
-        st_lottie("assets/meditation.json", 150)
+        render_lottie("assets/meditation.json", 150)
         st.markdown('<div class="section cta">', unsafe_allow_html=True)
         st.markdown("""
             ## 🚀 Ready to start your mood journey?
             Click any section from the sidebar to begin 💖
         """)
         st.markdown("</div>", unsafe_allow_html=True)
-
-
-def st_lottie(filepath, height=300):
-    with open(filepath, "r") as f:
-        animation_data = json.load(f)
-        encoded = base64.b64encode(json.dumps(animation_data).encode()).decode()
-        html(f"""
-        <script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script>
-        <lottie-player src='data:application/json;base64,{encoded}' background='transparent' speed='1' style='width:100%; height:{height}px;' loop autoplay></lottie-player>
-        """, height=height)
-# Meditation Lottie Animation Section
-with st.container():
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st_lottie(load_lottiefile("assets/meditation.json"), height=150)
-        st.markdown("### 🧘 Relax with MoodMate")
-        st.caption("Breathe in. Breathe out. Let MoodMate guide your calm.")
-
