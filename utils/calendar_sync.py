@@ -1,19 +1,20 @@
 import datetime
 import os
 import pickle
+import streamlit as st
 
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-import streamlit as st
 
 # Define the scope (Google Calendar API)
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
-# 🔐 Get or refresh Google credentials securely using Streamlit secrets
+# Get or refresh Google credentials
 def get_credentials():
     creds = None
     token_path = 'token.pickle'
+    credentials_path = 'credentials.json'
 
     if os.path.exists(token_path):
         with open(token_path, 'rb') as token:
@@ -23,26 +24,17 @@ def get_credentials():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            # 🔐 Load credentials from Streamlit secrets
-            client_config = {
-                "installed": {
-                    "client_id": st.secrets["GOOGLE_CLIENT_ID"],
-                    "client_secret": st.secrets["GOOGLE_CLIENT_SECRET"],
-                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                    "token_uri": "https://oauth2.googleapis.com/token",
-                    "redirect_uris": ["http://localhost"]
-                }
-            }
-            flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
+            if not os.path.exists(credentials_path):
+                st.error("❌ Missing `credentials.json` file. Please upload your Google OAuth credentials.")
+                return None
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
             creds = flow.run_local_server(port=0)
-
-        # Save token for future use
         with open(token_path, 'wb') as token:
             pickle.dump(creds, token)
 
     return creds
 
-# 📅 Add a journal reminder event to Google Calendar
+# Add event to Google Calendar
 def add_journal_reminder():
     creds = get_credentials()
     if not creds:
@@ -70,9 +62,18 @@ def add_journal_reminder():
         }
 
         event = service.events().insert(calendarId='primary', body=event).execute()
-        st.success(f"📅 Event added: [Open in Calendar]({event.get('htmlLink')})")
+        st.success("📅 Reminder added to your Google Calendar!")
+        st.markdown(f"[📎 View Event]({event.get('htmlLink')})")
 
     except Exception as e:
-        st.error(f"An error occurred while syncing with Google Calendar: {e}")
+        st.error(f"⚠️ An error occurred: {e}")
+
+# UI Function for Streamlit
+def calendar_integration_page():
+    st.title("📆 Google Calendar Sync")
+    st.markdown("Set a daily reminder to write your **MoodMate Journal** at 9:00 PM.")
+
+    st.info("To sync a reminder, authorize access to your Google Calendar account.")
+    
     if st.button("📅 Sync Journal Reminder to Google Calendar"):
         add_journal_reminder()
