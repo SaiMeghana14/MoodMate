@@ -2,9 +2,6 @@ import streamlit as st
 from utils.lottie_loader import render_lottie
 
 def show_landing_page_with_animations():
-    # Optional: Logo at the top
-    st.image("assets/moodmate_logo.png", width=200)
-
     # 🌈 Hero Section
     st.markdown("## 🌈 Welcome to MoodMate")
     st.markdown("Your smart companion for emotional wellness")
