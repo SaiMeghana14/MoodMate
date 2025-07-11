@@ -8,7 +8,7 @@ except LookupError:
     
 import streamlit as st
 from landing_page import show_landing_page_with_animations
-from utils.mood_journal import mood_journal_app
+from utils.mood_journal import mood_journal_page
 from utils.chatbot import chatbot_page
 from utils.dashboard import dashboard_page
 from utils.activities import activities_page
