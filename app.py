@@ -23,7 +23,7 @@ from utils.mood_tracker import mood_tracker_page
 from utils.achievements import achievements_page
 from utils.meditation import show_breathing_animation
 from utils.dashboard_utils import plot_mood_line_chart, plot_sentiment_bar_chart
-from utils.calendar_sync import add_journal_reminder
+from utils.calendar_sync import calendar_integration_page
 
 if st.button("📅 Sync Journal Reminder to Google Calendar"):
     add_journal_reminder()
