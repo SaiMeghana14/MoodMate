@@ -6,15 +6,7 @@
 <h1 align="center">🌈 MoodMate</h1>
 <p align="center"><b>Your Smart Emotional Wellness Companion</b></p>
 
-<p align="center">
-  <a href="https://moodmate.streamlit.app" target="_blank">
-    <img src="https://img.shields.io/badge/🚀%20Live%20App-MoodMate-6c63ff?style=for-the-badge" />
-  </a>
-  <a href="https://github.com/saimeghana/moodmate" target="_blank">
-    <img src="https://img.shields.io/github/stars/saimeghana/moodmate?style=for-the-badge" />
-  </a>
-  <br />
-</p>
+
 
 ---
 
@@ -40,9 +32,8 @@
 
 ## 🎯 Live Demo
 
-🔗 **[Click here to try MoodMate →](https://moodmate.streamlit.app)**
+🔗 **[Click here to try MoodMate →](https://moodmate-6xsbvbzxhzxheg9z87ou6v.streamlit.app/)**
 
-![MoodMate Preview](assets/screens/demo.png)
 
 ---
 
@@ -103,7 +94,7 @@ To enable Google Calendar syncing:
 **K.N.V. Sai Meghana**
 
 - 💼 [LinkedIn](https://www.linkedin.com/in/naga-venkata-sai-meghana-kovvada131b51259)
-- 💻 [GitHub](https://github.com/saimeghana)
+- 💻 [GitHub](https://github.com/SaiMeghana14)
 - 🧠 Creator of MoodMate for academic + personal project use
 
 ---
