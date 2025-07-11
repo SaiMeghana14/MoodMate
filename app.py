@@ -88,4 +88,4 @@ elif choice == "Mood Dashboard":
     plot_mood_line_chart(journals)
     plot_sentiment_bar_chart(journals)
 elif choice == "Calendar Sync":
-    show_calendar_integration()
+    calendar_integration_page()
