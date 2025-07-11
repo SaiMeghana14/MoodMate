@@ -8,7 +8,7 @@ from .journal import get_entries
 from collections import Counter
 import datetime
 
-def dashboard_page():
+def dashboard_page(username):
     st.title("📊 Mood Tracker Dashboard")
     
     entries = get_entries()
