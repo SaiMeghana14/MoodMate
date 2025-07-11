@@ -7,7 +7,6 @@
 <p align="center"><b>Your Smart Emotional Wellness Companion</b></p>
 
 
-
 ---
 
 ## 🧠 About
