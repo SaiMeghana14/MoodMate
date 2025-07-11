@@ -137,7 +137,8 @@ def mood_journal_page(username):
             st.markdown("---")
     else:
         st.info("No entries yet. Start journaling today!")
-    # 🔗 Sync with Calendar (✅ Add here)
+        
+    # 🔗 Sync with Calendar 
     st.markdown("### 🔔 Set a Daily Reminder")
     if st.button("📅 Sync Journal Reminder to Google Calendar"):
         from utils.calendar_sync import add_journal_reminder
