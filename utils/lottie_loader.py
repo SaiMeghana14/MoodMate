@@ -1,5 +1,6 @@
 import json
 import requests
+import streamlit as st  # ✅ Required for st.error() and st_lottie
 from streamlit_lottie import st_lottie
 
 def load_lottiefile(filepath: str):
@@ -30,7 +31,7 @@ def load_lottieurl(url: str):
 def render_lottie(source: str, height: int = 300, is_url: bool = False):
     """
     Render a Lottie animation in Streamlit.
-    
+
     :param source: File path or URL of the Lottie animation
     :param height: Height of the animation
     :param is_url: If True, loads from URL; otherwise, from local file
@@ -38,3 +39,5 @@ def render_lottie(source: str, height: int = 300, is_url: bool = False):
     animation = load_lottieurl(source) if is_url else load_lottiefile(source)
     if animation:
         st_lottie(animation, height=height)
+    else:
+        st.warning("⚠️ Could not load the Lottie animation.")
