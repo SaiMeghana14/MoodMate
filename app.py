@@ -72,7 +72,7 @@ elif choice == "Mood Predictor":
 elif choice == "Mood Tracker":
     mood_tracker_page()
 elif choice == "Achievements":
-    achievements_page()
+    achievements_page(username)
 elif choice == "Meditation":
     show_breathing_animation()
 elif choice == "Mood Dashboard":
