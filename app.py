@@ -25,6 +25,8 @@ from utils.meditation import show_breathing_animation
 from utils.dashboard_utils import plot_mood_line_chart, plot_sentiment_bar_chart
 from utils.calendar_sync import show_calendar_integration
 
+# ✅ Define username early
+username = st.session_state.get("username", "demo_user")
 
 # Show login first
 if "user" not in st.session_state:
@@ -54,7 +56,8 @@ elif choice == "Mood Journal":
 elif choice == "Chatbot":
     chatbot_page()
 elif choice == "Dashboard":
-    dashboard_page()
+    username = st.session_state.get("username", "demo_user")
+    dashboard_page(username)
 elif choice == "Activities":
     activities_page()
 elif choice == "Therapy Bot":
