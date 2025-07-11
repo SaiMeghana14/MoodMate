@@ -65,46 +65,46 @@ def show_landing_page_with_animations():
             st.markdown("</div>", unsafe_allow_html=True)
 
     # ✅ Developer Spotlight Section
-   elif section == "Developer": 
-    with st.container():
-        st.markdown('<div class="section team">', unsafe_allow_html=True)
-        st.markdown("""
-            ## 👤 Developer Spotlight  
-            - **K.N.V. Sai Meghana** – Developer, Designer & Creator of MoodMate  
-            Passionate about emotional well-being, I built MoodMate as a smart mental health companion blending AI, journaling, and self-care features.
-        """)
-        st.markdown("</div>", unsafe_allow_html=True)
+    elif section == "Developer":
+        with st.container():
+            st.markdown('<div class="section team">', unsafe_allow_html=True)
+            st.markdown("""
+                ## 👤 Developer Spotlight  
+                - **K.N.V. Sai Meghana** – Developer, Designer & Creator of MoodMate  
+                Passionate about emotional well-being, I built MoodMate as a smart mental health companion blending AI, journaling, and self-care features.
+            """)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # ✅ FAQ Section
     elif section == "FAQ":
-       with st.container():
-        st.markdown('<div class="section faq">', unsafe_allow_html=True)
-        st.markdown("""
-            ## ❓ Frequently Asked Questions  
-            **Is my data private?** Yes, MoodMate supports end-to-end encryption.  
-            **Do I need internet for this?** Only for syncing and AI features.  
-            **Can I use this offline?** Yes, basic journaling and breathing tools work offline.
-        """)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown('<div class="section faq">', unsafe_allow_html=True)
+            st.markdown("""
+                ## ❓ Frequently Asked Questions  
+                **Is my data private?** Yes, MoodMate supports end-to-end encryption.  
+                **Do I need internet for this?** Only for syncing and AI features.  
+                **Can I use this offline?** Yes, basic journaling and breathing tools work offline.
+            """)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # ✅ Impact Stories Section
     elif section == "Impact":
-       with st.container():
-        st.markdown('<div class="section impact">', unsafe_allow_html=True)
-        st.markdown("""
-            ## 💡 Real Impact  
-            *"Before MoodMate, I used to bottle everything inside. Now I reflect and heal every day."* – Priya, Student  
-            *"Our college mental health club recommends MoodMate to help students cope better."* – Mentor
-        """)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown('<div class="section impact">', unsafe_allow_html=True)
+            st.markdown("""
+                ## 💡 Real Impact  
+                *"Before MoodMate, I used to bottle everything inside. Now I reflect and heal every day."* – Priya, Student  
+                *"Our college mental health club recommends MoodMate to help students cope better."* – Mentor
+            """)
+            st.markdown("</div>", unsafe_allow_html=True)
 
     # ✅ Call to Action Section
     elif section == "Get Started":
-       with st.container():
-        render_lottie("assets/meditation.json", height=150)
-        st.markdown('<div class="section cta">', unsafe_allow_html=True)
-        st.markdown("""
-            ## 🚀 Ready to start your mood journey?  
-            Click any section from the sidebar to begin 💖
-        """)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            render_lottie("assets/meditation.json", height=150)
+            st.markdown('<div class="section cta">', unsafe_allow_html=True)
+            st.markdown("""
+                ## 🚀 Ready to start your mood journey?  
+                Click any section from the sidebar to begin 💖
+            """)
+            st.markdown("</div>", unsafe_allow_html=True)
