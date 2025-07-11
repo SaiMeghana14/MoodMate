@@ -25,6 +25,9 @@ from utils.meditation import show_breathing_animation
 from utils.dashboard_utils import plot_mood_line_chart, plot_sentiment_bar_chart
 from utils.calendar_sync import show_calendar_integration
 
+# 🔗 Load Custom CSS
+st.markdown("<link href='assets/styles.css' rel='stylesheet'>", unsafe_allow_html=True)
+
 # ✅ Define username early
 username = st.session_state.get("username", "demo_user")
 
