@@ -11,27 +11,12 @@ body {
   padding: 0;
 }
 
-/* Layout & Containers */
+/* Section Layout */
 .section {
   padding: 4rem 2rem;
   margin-bottom: 2rem;
   border-radius: 16px;
   transition: all 0.3s ease-in-out;
-}
-iframe {
-  border-radius: 12px;
-  max-width: 100%;
-}
-
-.section h2 {
-  margin-top: 2rem;
-}
-
-.plotly-graph {
-  padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  background-color: #f9f9f9;
 }
 
 /* Hero Section */
@@ -52,7 +37,7 @@ iframe {
   font-style: italic;
 }
 
-/* Team Section */
+/* Developer Team Section */
 .team {
   background: linear-gradient(to right, #d4fc79, #96e6a1);
 }
@@ -67,13 +52,13 @@ iframe {
   background: linear-gradient(to right, #fccb90, #d57eeb);
 }
 
-/* Call to Action Section */
+/* Call to Action */
 .cta {
   background: linear-gradient(to right, #fdfbfb, #ebedee);
   text-align: center;
 }
 
-/* Headings */
+/* Typography */
 h1, h2, h3, h4 {
   font-weight: 600;
   margin-top: 0;
@@ -82,6 +67,12 @@ h1, h2, h3, h4 {
 p {
   font-size: 1rem;
   line-height: 1.6;
+}
+
+a {
+  color: #ff6ec4;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 /* Buttons */
@@ -107,10 +98,19 @@ input, textarea, select {
   font-size: 1rem;
 }
 
-/* Sidebar styling */
+/* Sidebar Text Styling */
 .css-1d391kg, .css-1v3fvcr {
   color: #6c63ff !important;
   font-weight: bold;
+}
+
+/* Cards */
+.card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
 }
 
 /* Responsive Layout */
@@ -137,7 +137,9 @@ input, textarea, select {
   }
 }
 
-/* Optional: Dark Mode Support */
+/* ================================
+   🌙 Optional: Dark Mode Support
+   ================================ */
 @media (prefers-color-scheme: dark) {
   body {
     background: #1f1f1f;
@@ -145,6 +147,12 @@ input, textarea, select {
   }
 
   .section {
+    border: 1px solid #444;
+    background-color: #2a2a2a;
+  }
+
+  .card {
+    background-color: #2f2f2f;
     border: 1px solid #444;
   }
 
@@ -172,7 +180,7 @@ input, textarea, select {
   margin: 0 auto;
 }
 
-/* Custom Sidebar Highlight */
+/* Custom Sidebar Title */
 .sidebar-title {
   color: #6c63ff;
   font-size: 1.2rem;
@@ -180,31 +188,26 @@ input, textarea, select {
   margin-bottom: 1rem;
 }
 
-/* Gradient text headers */
+/* Gradient Text */
 .gradient-text {
   background: linear-gradient(to right, #ff758c, #ff7eb3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+/* Audio Transcription Display */
 .audio-transcription {
   font-style: italic;
   color: #555;
 }
 
-iframe {
-  border-radius: 12px;
-  max-width: 100%;
-}
+/* Frame Elements */
 iframe {
   border-radius: 12px;
   max-width: 100%;
 }
 
-.section h2 {
-  margin-top: 2rem;
-}
-
+/* Plotly Graphs */
 .plotly-graph {
   padding: 1rem;
   border: 1px solid #eee;
