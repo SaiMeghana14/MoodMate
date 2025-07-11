@@ -1,6 +1,45 @@
 import streamlit as st
 from utils.lottie_loader import render_lottie
 
+st.markdown("""
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+  background-size: 800% 800%;
+  animation: gradientAnimation 30s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* ✨ Bonus: Glowing Text Class */
+.glow-text {
+  color: #fff;
+  text-shadow: 0 0 5px #ffb3c6, 0 0 10px #ffa5d8, 0 0 15px #ff99c8;
+}
+</style>
+
+<div id="gradient-bg"></div>
+""", unsafe_allow_html=True)
+
+
+
 def show_landing_page_with_animations():
     st.markdown("""
         <style>
@@ -43,7 +82,7 @@ def show_landing_page_with_animations():
         </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div class='gradient-heading'>🌈 Welcome to MoodMate</div>", unsafe_allow_html=True)
+    st.markdown('<h2 class="glow-text">Welcome to MoodMate 💖</h2>', unsafe_allow_html=True)
     st.caption("Your smart companion for emotional wellness")
 
     # 🌟 Features
