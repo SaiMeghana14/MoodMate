@@ -37,15 +37,6 @@ if "user" not in st.session_state:
         signup_form()
         st.stop()
 
-import streamlit as st
-
-# Centered Logo, Title, and Slogan
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.image("assets/logo.png", width=200)
-    st.markdown("### MoodMate")
-    st.caption("Your Mind’s Best Mate")
-
 # Sidebar Menu
 st.sidebar.title("🧠 MoodMate Navigation")
 menu = [
