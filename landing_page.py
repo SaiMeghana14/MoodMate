@@ -139,3 +139,11 @@ def st_lottie(filepath, height=300):
         <script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script>
         <lottie-player src='data:application/json;base64,{encoded}' background='transparent' speed='1' style='width:100%; height:{height}px;' loop autoplay></lottie-player>
         """, height=height)
+# Meditation Lottie Animation Section
+with st.container():
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st_lottie(load_lottiefile("assets/meditation.json"), height=150)
+        st.markdown("### 🧘 Relax with MoodMate")
+        st.caption("Breathe in. Breathe out. Let MoodMate guide your calm.")
+
