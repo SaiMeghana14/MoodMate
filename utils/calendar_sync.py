@@ -10,11 +10,10 @@ import streamlit as st
 # Define the scope (Google Calendar API)
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
-# Get or refresh Google credentials
+# 🔐 Get or refresh Google credentials securely using Streamlit secrets
 def get_credentials():
     creds = None
     token_path = 'token.pickle'
-    credentials_path = 'credentials.json'
 
     if os.path.exists(token_path):
         with open(token_path, 'rb') as token:
@@ -24,17 +23,26 @@ def get_credentials():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            if not os.path.exists(credentials_path):
-                st.error("Missing credentials.json file. Please provide OAuth credentials.")
-                return None
-            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
+            # 🔐 Load credentials from Streamlit secrets
+            client_config = {
+                "installed": {
+                    "client_id": st.secrets["GOOGLE_CLIENT_ID"],
+                    "client_secret": st.secrets["GOOGLE_CLIENT_SECRET"],
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "redirect_uris": ["http://localhost"]
+                }
+            }
+            flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
             creds = flow.run_local_server(port=0)
+
+        # Save token for future use
         with open(token_path, 'wb') as token:
             pickle.dump(creds, token)
 
     return creds
 
-# Add event to calendar
+# 📅 Add a journal reminder event to Google Calendar
 def add_journal_reminder():
     creds = get_credentials()
     if not creds:
@@ -62,7 +70,7 @@ def add_journal_reminder():
         }
 
         event = service.events().insert(calendarId='primary', body=event).execute()
-        st.success(f"📅 Event added: {event.get('htmlLink')}")
+        st.success(f"📅 Event added: [Open in Calendar]({event.get('htmlLink')})")
 
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"An error occurred while syncing with Google Calendar: {e}")
