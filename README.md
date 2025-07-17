@@ -123,4 +123,4 @@ Make sure your `settings > Pages` source is set to the root `/docs` or `/main` b
 
 ## 💖 If You Like This Project...
 
-Give it a ⭐, share it with a friend, or use it as a template for your own AI wellness app!
+Give it a ⭐, share it with a friend, or use it as a template for your own AI wellness app! 
