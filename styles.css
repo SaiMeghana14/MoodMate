@@ -2,215 +2,80 @@
    🌈 MoodMate – Global App Styles
    ================================ */
 
-/* Base Styling */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #fefefe;
-  color: #333;
-  margin: 0;
-  padding: 0;
+    background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Section Layout */
-.section {
-  padding: 4rem 2rem;
-  margin-bottom: 2rem;
-  border-radius: 16px;
-  transition: all 0.3s ease-in-out;
+h1, h2, h3 {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Hero Section */
-.hero {
-  background: linear-gradient(to right, #ffdde1, #ee9ca7);
-  text-align: center;
-  color: #111;
+.section-divider {
+    border-top: 2px solid #cfd8dc;
+    margin: 20px 0;
 }
 
-/* Core Features */
-.features {
-  background: linear-gradient(to right, #c9ffbf, #ffafbd);
+.frame {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
 }
 
-/* Testimonials Section */
-.testimonials {
-  background: linear-gradient(to right, #fbc2eb, #a6c1ee);
-  font-style: italic;
+.frame:hover {
+    transform: scale(1.02);
 }
 
-/* Developer Team Section */
-.team {
-  background: linear-gradient(to right, #d4fc79, #96e6a1);
+.mood-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
-/* FAQs Section */
-.faq {
-  background: linear-gradient(to right, #84fab0, #8fd3f4);
+.mood-card.happy {
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
 }
 
-/* Impact Stories */
-.impact {
-  background: linear-gradient(to right, #fccb90, #d57eeb);
+.mood-card.neutral {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
 }
 
-/* Call to Action */
-.cta {
-  background: linear-gradient(to right, #fdfbfb, #ebedee);
-  text-align: center;
+.mood-card.anxious {
+    background: linear-gradient(135deg, #ffe259 0%, #ffa751 100%);
 }
 
-/* Typography */
-h1, h2, h3, h4 {
-  font-weight: 600;
-  margin-top: 0;
+.mood-card.tired {
+    background: linear-gradient(135deg, #dce35b 0%, #45b649 100%);
 }
 
-p {
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-a {
-  color: #ff6ec4;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* Buttons */
-button, .stButton > button {
-  background-color: #6c63ff;
-  color: white;
-  border-radius: 12px;
-  padding: 10px 20px;
-  border: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
+/* Subtle animations */
 button:hover {
-  background-color: #5548c8;
+    transform: scale(1.05);
+    transition: 0.2s;
+    background-color: #6a11cb;
+    color: #ffffff;
 }
 
-/* Input Fields */
-input, textarea, select {
-  border-radius: 8px !important;
-  border: 1px solid #ccc !important;
-  padding: 10px;
-  font-size: 1rem;
+/* Custom Streamlit tweaks */
+.stButton > button {
+    background-color: #6a11cb;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
-/* Sidebar Text Styling */
-.css-1d391kg, .css-1v3fvcr {
-  color: #6c63ff !important;
-  font-weight: bold;
+.stButton > button:hover {
+    background: linear-gradient(90deg, #2575fc, #6a11cb);
+    transform: scale(1.03);
 }
 
-/* Cards */
-.card {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  margin-bottom: 1rem;
-}
 
-/* Responsive Layout */
-@media screen and (max-width: 768px) {
-  .section {
-    padding: 2rem 1rem;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  p, li {
-    font-size: 0.95rem;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-  }
-}
-
-/* ================================
-   🌙 Optional: Dark Mode Support
-   ================================ */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #1f1f1f;
-    color: #eee;
-  }
-
-  .section {
-    border: 1px solid #444;
-    background-color: #2a2a2a;
-  }
-
-  .card {
-    background-color: #2f2f2f;
-    border: 1px solid #444;
-  }
-
-  input, textarea {
-    background: #2b2b2b !important;
-    color: #fff !important;
-  }
-
-  button {
-    background-color: #8a74ff;
-  }
-
-  button:hover {
-    background-color: #7b5fff;
-  }
-}
-
-/* ================================
-   🧠 Custom Tweaks & Extras
-   ================================ */
-
-/* Centered Lottie Box */
-.lottie-box {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Custom Sidebar Title */
-.sidebar-title {
-  color: #6c63ff;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-/* Gradient Text */
-.gradient-text {
-  background: linear-gradient(to right, #ff758c, #ff7eb3);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Audio Transcription Display */
-.audio-transcription {
-  font-style: italic;
-  color: #555;
-}
-
-/* Frame Elements */
-iframe {
-  border-radius: 12px;
-  max-width: 100%;
-}
-
-/* Plotly Graphs */
-.plotly-graph {
-  padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  background-color: #f9f9f9;
-}
