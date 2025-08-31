@@ -88,7 +88,7 @@ def show_landing_page_with_animations():
     # 🌟 Features
     with st.expander("✨ Core Features", expanded=True):
         st.markdown("<div class='glass-section'>", unsafe_allow_html=True)
-       render_lottie("assets/features.json", height=180, is_url=False)
+        render_lottie("assets/features.json", height=180, is_url=False)
         st.markdown("""
         - Mood Detection via Journal and Voice  
         - Empathetic AI Chatbot  
